@@ -2,6 +2,7 @@
   (:require [clojure.test :refer :all]
             [clojure-tic-tac-toe.core :refer :all]))
 
-(deftest a-test
-  (testing "FIXME, I fail."
-    (is (= 1 1))))
+(deftest print-board-test
+  (testing "Print a board"
+    (is (= "Example:\n"
+           (with-out-str (print-board))))))

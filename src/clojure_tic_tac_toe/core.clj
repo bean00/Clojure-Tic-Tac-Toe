@@ -1,7 +1,10 @@
 (ns clojure-tic-tac-toe.core
   (:gen-class))
 
+(defn print-board []
+  (println "Example:"))
+
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Tic Tac Toe program."
   [& args]
-  (println "Hello, World!"))
+  (println "This is a Tic Tac Toe program."))
