@@ -1,21 +1,46 @@
 (ns clojure-tic-tac-toe.core-test
   (:require [clojure.test :refer [deftest testing is]]
-            [clojure-tic-tac-toe.core :refer :all]))
+            [clojure-tic-tac-toe.core :refer :all]
+            [clojure.string :as str]))
 
-(deftest get-move-test
-  (testing "when getting a move"
-    (with-out-str
-      (is (= 4
-             (with-in-str "4"
-               (get-move :O)))
-          "it returns the move"))))
+(defn- what-play-round-displays []
+  (with-out-str
+    (with-in-str "3"
+      (play-round { :X #{} :O #{} } :X))))
 
-(deftest int-to-keyword-test
-  (testing "with an integer"
-    (is (= :3
-           (int-to-keyword 3))
-        "it returns the corresponding keyword"))
-  (testing "with a different integer"
-    (is (= :5
-           (int-to-keyword 5))
-        "it returns the corresponding keyword")))
+(deftest play-round-test
+  (testing "when 1 round is played"
+    (is (= true
+           (str/includes?
+             (what-play-round-displays)
+             "Player X"))
+        "it displays the player prompt")
+    (is (= true
+           (str/includes?
+             (what-play-round-displays)
+             " 1 | 2 | X "))
+        "it displays a row of the board")))
+
+(defn- what-play-game-displays []
+  (with-out-str
+    (with-in-str "3"
+      (play-game))))
+
+(deftest play-game-test
+  (testing "when the game is played"
+    (is (= true
+           (str/includes?
+             (what-play-game-displays)
+             "Tic Tac Toe"))
+        "it displays the introduction")
+    (is (= true
+           (str/includes?
+             (what-play-game-displays)
+             " 4 | 5 | 6 "))
+        "it display a row of the example board")
+    (is (= true
+           (str/includes?
+             (what-play-game-displays)
+             "enter a move"))
+        "it displays output for playing a round")))
+

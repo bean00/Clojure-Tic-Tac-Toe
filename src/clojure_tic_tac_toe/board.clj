@@ -1,18 +1,15 @@
-(ns clojure-tic-tac-toe.board)
+(ns clojure-tic-tac-toe.board
+  (:require [clojure-tic-tac-toe.helper :as helper]))
+
+(def empty-board { :X #{} :O #{} })
 
 (defn add-move
   [board move player]
   (update board player conj move))
 
-(defn filter-out-player-moves
-  [board position]
-  (into {} (filter (fn [[k v]]
-                     (contains? v position))
-                   board)))
-
 (defn token-at
   [board position]
   (or
-    (first (keys (filter-out-player-moves board position)))
+    (first (keys (helper/get-map-with-value-in-set board position)))
     position))
 
