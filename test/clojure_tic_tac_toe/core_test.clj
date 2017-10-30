@@ -1,4 +1,4 @@
-(ns clojure-tic-tac-toe.core-test
+(ns clojure-tic-tac-toe.core_test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.core :refer :all]
             [clojure.string :as str]))
@@ -33,6 +33,11 @@
              (what-play-game-displays)
              "Tic Tac Toe"))
         "it displays the introduction")
+    (is (= true
+           (str/includes?
+             (what-play-game-displays)
+             "type a number"))
+        "it displays the instructions")
     (is (= true
            (str/includes?
              (what-play-game-displays)

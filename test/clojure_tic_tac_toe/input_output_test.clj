@@ -1,7 +1,9 @@
 (ns clojure-tic-tac-toe.input_output_test
-  (:require [clojure.test :refer [deftest testing is]]
-            [clojure-tic-tac-toe.input_output :refer :all]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.test :refer [deftest testing is]]
+            [clojure-tic-tac-toe.board :as board]
+            [clojure-tic-tac-toe.utilities :refer [join-lines]]
+            [clojure-tic-tac-toe.input_output :refer :all]))
 
 (deftest display-introduction-test
   (testing "when the player starts the program"
@@ -10,82 +12,51 @@
              (display-introduction)))
         "it displays an introduction")))
 
-(deftest prompt-player-for-move-test
-  (testing "when the player is prompted for a move"
-    (is (= "\nPlayer X, please enter a move from 1-9: "
-           (with-out-str 
-             (prompt-player-for-move :X)))
-        "it prints out the prompt for Player X")
-    (is (= "\nPlayer O, please enter a move from 1-9: "
+(deftest display-instructions-test
+  (testing "when the player has seen the introduction"
+    (is (= (join-lines ["To enter a move, type a number from 1-9."
+                        "It will be added to the board based on"
+                        "the following positions:\n\n"])
            (with-out-str
-             (prompt-player-for-move :O)))
-        "it prints out the prompt for Player O")))
+             (display-instructions)))
+        "it displays the instructions")))
 
 (deftest get-move-test
-  (testing "when getting the move"
+  (testing "when initially getting the move from the player"
+    (is (= true
+           (str/includes?
+             (with-out-str
+               (with-in-str "1"
+                 (get-move :X)))
+             "Player X, please enter"))
+        "it displays the prompt"))
+  (testing "when a valid move is entered"
     (with-out-str
-      (is (= :4
-             (with-in-str "4"
-               (get-move :O)))
-          "it returns the move as a keyword"))))
-
-(defn- create-view
-  [separate-rows]
-  (str/join "\n" separate-rows))
-
-(deftest create-view-from-board-test
-  (testing "when the board is empty"
-    (let [view (create-view [" 1 | 2 | 3 "
-                             "---+---+---"
-                             " 4 | 5 | 6 "
-                             "---+---+---"
-                             " 7 | 8 | 9 "])]
-      (is (= view
-             (create-view-from-board { :X #{} :O #{} }))
-          "it returns a board with all the positions numbered")))
-  (testing "when X has moved to position 1"
-    (let [view (create-view [" X | 2 | 3 "
-                             "---+---+---"
-                             " 4 | 5 | 6 "
-                             "---+---+---"
-                             " 7 | 8 | 9 "])]
-      (is (= view
-             (create-view-from-board { :X #{:1} :O #{} }))
-          "it returns a board with X in the top left corner")))
-  (testing "when X and O have each made 1 move"
-    (let [view (create-view [" X | 2 | 3 "
-                             "---+---+---"
-                             " 4 | O | 6 "
-                             "---+---+---"
-                             " 7 | 8 | 9 "])]
-      (is (= view
-             (create-view-from-board { :X #{:1} :O #{:5} }))
-          "it returns a board with both moves"))))
+      (is (= :2
+             (with-in-str "2"
+               (get-move :X)))
+          "it returns the move as a keyword")))
+  (testing "when an invalid move is entered, followed by a valid move"
+    (let [output (with-out-str
+                   (with-in-str "x\n1"
+                     (get-move :O)))]
+      (is (= true
+             (str/includes? output "Error"))
+          "it displays an error message")
+      (is (= 2
+             (count (re-seq #"enter your move" output))))
+          "it displays the prompt twice")))
 
 (deftest display-board-test
   (testing "when a board is passed in"
-    (let [view (create-view [" X | 2 | X "
-                             "---+---+---"
-                             " 4 | O | 6 "
-                             "---+---+---"
-                             " 7 | 8 | 9 "
-                             ""])]
+    (let [view (join-lines [" X | 2 | X "
+                            "---+---+---"
+                            " 4 | O | 6 "
+                            "---+---+---"
+                            " 7 | 8 | 9 "
+                            ""])]
       (is (= view
              (with-out-str
                (display-board { :X #{:1 :3} :O #{:5} })))
           "it displays the board correctly"))))
-
-(deftest display-example-board-test
-  (testing "when the player has seen the introduction"
-    (let [view (create-view ["Example board:"
-                             " 1 | 2 | 3 "
-                             "---+---+---"
-                             " 4 | 5 | 6 "
-                             "---+---+---"
-                             " 7 | 8 | 9 "
-                             ""])]
-      (is (= view
-             (with-out-str
-               (display-example-board)))
-          "it displays the example board with a description"))))
 

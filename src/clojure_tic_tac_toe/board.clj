@@ -1,5 +1,9 @@
 (ns clojure-tic-tac-toe.board
-  (:require [clojure-tic-tac-toe.helper :as helper]))
+  (:require [clojure-tic-tac-toe.utilities :as utilities]))
+
+(def valid-moves #{:1 :2 :3
+                   :4 :5 :6
+                   :7 :8 :9})
 
 (def empty-board { :X #{} :O #{} })
 
@@ -10,6 +14,10 @@
 (defn token-at
   [board position]
   (or
-    (first (keys (helper/get-map-with-value-in-set board position)))
+    (first (keys (utilities/get-map-with-value-in-set board position)))
     position))
+
+(defn is-move-valid?
+  [move]
+  (contains? valid-moves move))
 

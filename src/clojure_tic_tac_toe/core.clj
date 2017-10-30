@@ -10,7 +10,8 @@
 
 (defn play-game []
   (io/display-introduction)
-  (io/display-example-board)
+  (io/display-instructions)
+  (io/display-board board/empty-board)
   (play-round board/empty-board :X))
 
 (defn -main

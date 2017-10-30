@@ -1,4 +1,4 @@
-(ns clojure-tic-tac-toe.board-test
+(ns clojure-tic-tac-toe.board_test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.board :refer :all]))
 
@@ -31,4 +31,14 @@
     (is (= :X
            (token-at { :X #{:1} :O #{} } :1 ))
         "it returns the token key for X")))
+
+(deftest is-move-valid?-test
+  (testing "when a valid move is passed in"
+    (is (= true
+           (is-move-valid? :3))
+        "it returns true"))
+  (testing "when an invalid move is passed in"
+    (is (= false
+           (is-move-valid? :e))
+        "it returns false")))
 

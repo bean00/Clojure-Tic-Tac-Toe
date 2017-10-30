@@ -1,19 +1,40 @@
 (ns clojure-tic-tac-toe.input_output
-  (:require [clojure-tic-tac-toe.board :as board]
-            [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure-tic-tac-toe.board :as board]
+            [clojure-tic-tac-toe.utilities :refer [join-lines]]))
 
 (defn display-introduction []
   (println "This is a Tic Tac Toe program.\n"))
 
-(defn prompt-player-for-move
+(defn display-instructions []
+  (println (join-lines ["To enter a move, type a number from 1-9."
+                        "It will be added to the board based on"
+                        "the following positions:\n"])))
+
+
+(defn- prompt-player-for-move
   [player]
-  (printf "\nPlayer %s, please enter a move from 1-9: ", (name player)))
+  (printf "\nPlayer %s, please enter your move: ", (name player)))
+
+(defn- display-invalid-move-message
+  [move]
+  (printf "\n<!> Error: Move \"%s\" is invalid. Must be from 1-9.", (name move)))
+
+(defn- get-input []
+  (keyword (str/trim (read-line))))
 
 (defn get-move
   [player]
-  (prompt-player-for-move player)
-  (flush)
-  (keyword (str (Integer/parseInt (read-line)))))
+  (loop []
+    (prompt-player-for-move player)
+    (flush)
+    (let [move (get-input)]
+      (if (board/is-move-valid? move)
+        move
+        (do
+          (display-invalid-move-message move)
+          (recur))))))
+
 
 (def tokens {:1 "1", :2 "2", :3 "3"
              :4 "4", :5 "5", :6 "6"
@@ -27,19 +48,15 @@
           (tokens (board/token-at board token-key-2)),
           (tokens (board/token-at board token-key-3))))
 
-(defn create-view-from-board
+(defn- create-view-from-board
   [board]
-  (str/join "\n" [(create-row board :1 :2 :3)
-                  "---+---+---"
-                  (create-row board :4 :5 :6)
-                  "---+---+---"
-                  (create-row board :7 :8 :9)]))
+  (join-lines [(create-row board :1 :2 :3)
+               "---+---+---"
+               (create-row board :4 :5 :6)
+               "---+---+---"
+               (create-row board :7 :8 :9)]))
 
 (defn display-board
   [board]
   (println (create-view-from-board board)))
-
-(defn display-example-board []
-  (println "Example board:")
-  (display-board board/empty-board))
 
