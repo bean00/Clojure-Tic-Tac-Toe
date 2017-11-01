@@ -27,25 +27,33 @@
            (str/includes?
              (with-out-str
                (with-in-str "1"
-                 (get-move :X)))
+                 (get-move board/empty-board :X)))
              "Player X, please enter"))
         "it displays the prompt"))
   (testing "when a valid move is entered"
     (with-out-str
       (is (= :2
              (with-in-str "2"
-               (get-move :X)))
+               (get-move board/empty-board :X)))
           "it returns the move as a keyword")))
   (testing "when an invalid move is entered, followed by a valid move"
     (let [output (with-out-str
                    (with-in-str "x\n1"
-                     (get-move :O)))]
+                     (get-move board/empty-board :O)))]
       (is (= true
-             (str/includes? output "Error"))
-          "it displays an error message")
+             (str/includes? output "is invalid"))
+          "it displays the correct error message")
       (is (= 2
              (count (re-seq #"enter your move" output))))
-          "it displays the prompt twice")))
+          "it displays the prompt twice"))
+  (testing "when a move is entered that has already been taken"
+    (is (= true
+           (str/includes?
+             (with-out-str
+               (with-in-str "3\n1"
+                 (get-move { :X #{:3} :O #{} } :O)))
+             "already taken"))
+        "it displays the correct error message")))
 
 (deftest display-board-test
   (testing "when a board is passed in"

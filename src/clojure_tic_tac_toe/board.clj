@@ -17,7 +17,13 @@
     (first (keys (utilities/get-map-with-value-in-set board position)))
     position))
 
-(defn is-move-valid?
+(defn is-move-invalid?
   [move]
-  (contains? valid-moves move))
+  (not (contains? valid-moves move)))
+
+(defn has-move-been-taken?
+  [board move]
+  (let [moves (vals board)]
+    (true?
+      (some #(contains? % move) moves))))
 

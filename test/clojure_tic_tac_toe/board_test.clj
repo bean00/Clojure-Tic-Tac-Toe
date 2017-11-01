@@ -32,13 +32,23 @@
            (token-at { :X #{:1} :O #{} } :1 ))
         "it returns the token key for X")))
 
-(deftest is-move-valid?-test
+(deftest is-move-invalid?-test
   (testing "when a valid move is passed in"
     (is (= true
-           (is-move-valid? :3))
+           (is-move-invalid? :e))
         "it returns true"))
   (testing "when an invalid move is passed in"
     (is (= false
-           (is-move-valid? :e))
+           (is-move-invalid? :3))
+        "it returns false")))
+
+(deftest has-move-been-taken?-test
+  (testing "when a move has already been taken"
+    (is (= true
+           (has-move-been-taken? { :X #{:4} :O #{} } :4))
+        "it returns true"))
+  (testing "when a move has not been taken"
+    (is (= false
+           (has-move-been-taken? { :X #{:3} :O #{:5} } :9))
         "it returns false")))
 
