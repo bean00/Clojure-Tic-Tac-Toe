@@ -20,3 +20,13 @@
                         "Third line"]))
         "it joins the lines together with newlines")))
 
+(deftest contains-set?-test
+  (testing "when a collection contains the set"
+    (is (= true
+           (contains-set? (list #{:1 :2} #{:3 :4}) #{:1 :2}))
+        "it returns true"))
+  (testing "when a collection doesn't contain the set"
+    (is (= false
+           (contains-set? (list #{:1 :2}) #{:3 :4}))
+        "it returns false")))
+

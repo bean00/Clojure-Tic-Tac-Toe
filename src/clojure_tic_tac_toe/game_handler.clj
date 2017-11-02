@@ -1,8 +1,9 @@
 (ns clojure-tic-tac-toe.game_handler
-  (:require [clojure-tic-tac-toe.board :as board]))
+  (:require [clojure-tic-tac-toe.board :as board]
+            [clojure-tic-tac-toe.win_checker :as win-checker]))
 
 (def starting-game-state
-  {:board board/empty-board, :player :X, :finished? false})
+  {:board board/empty-board, :player :X, :finished? false, :winner false})
 
 (defn get-board
   [game-state]
@@ -19,8 +20,9 @@
       (remove #{player} tokens))))
 
 (defn- is-game-finished?
-  [board]
-  (empty? (board/get-available-moves board)))
+  [board player]
+  (or (win-checker/has-player-won? board player)
+      (board/is-board-full? board)))
 
 (defn create-next-game-state
   [{:keys [board player]} move]

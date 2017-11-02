@@ -31,3 +31,7 @@
   (let [available-moves (get-available-moves board)]
     (not (contains? available-moves move))))
 
+(defn is-board-full?
+  [board]
+  (empty? (get-available-moves board)))
+

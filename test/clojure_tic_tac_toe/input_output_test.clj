@@ -69,9 +69,19 @@
           "it displays the board correctly"))))
 
 (deftest display-game-over-message-test
-  (testing "when the game is over"
-    (is (= "\nGame over.\n"
+  (testing "when the game ended in a tie"
+    (is (= "\nGame over. Ended in a tie.\n"
            (with-out-str
-             (display-game-over-message)))
-        "it displays the correct message")))
+             (display-game-over-message false)))
+        "it displays the tie message"))
+  (testing "when Player X won"
+    (is (= "\nGame over. Player X won.\n"
+           (with-out-str
+             (display-game-over-message :X)))
+        "it displays a message saying X won"))
+  (testing "when Player O won"
+    (is (= "\nGame over. Player O won.\n"
+           (with-out-str
+             (display-game-over-message :O)))
+        "it displays a message saying O won")))
 
