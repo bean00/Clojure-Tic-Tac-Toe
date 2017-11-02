@@ -1,5 +1,6 @@
 (ns clojure-tic-tac-toe.board
-  (:require [clojure-tic-tac-toe.utilities :as utilities]))
+  (:require [clojure.set :as set]
+            [clojure-tic-tac-toe.utilities :as utilities]))
 
 (def valid-moves #{:1 :2 :3
                    :4 :5 :6
@@ -17,13 +18,16 @@
     (first (keys (utilities/get-map-with-value-in-set board position)))
     position))
 
+(defn get-available-moves
+  [board]
+  (reduce set/difference valid-moves (vals board)))
+
 (defn is-move-invalid?
   [move]
   (not (contains? valid-moves move)))
 
 (defn has-move-been-taken?
   [board move]
-  (let [moves (vals board)]
-    (true?
-      (some #(contains? % move) moves))))
+  (let [available-moves (get-available-moves board)]
+    (not (contains? available-moves move))))
 

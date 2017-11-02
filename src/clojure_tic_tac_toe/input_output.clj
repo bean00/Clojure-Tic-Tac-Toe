@@ -16,16 +16,8 @@
   [player]
   (printf "\nPlayer %s, please enter your move: ", (name player)))
 
-(defn- display-invalid-move-message
-  [move]
-  (printf "\n<!> Error: Move \"%s\" is invalid. Must be from 1-9.", (name move)))
-
 (defn- get-input []
   (keyword (str/trim (read-line))))
-
-(defn get-move
-  [player]
-  (printf "\nPlayer %s, please enter your move: ", (name player)))
 
 (defn- display-invalid-move-message
   [move]
@@ -81,4 +73,7 @@
 (defn display-board
   [board]
   (println (create-view-from-board board)))
+
+(defn display-game-over-message []
+  (println "\nGame over."))
 

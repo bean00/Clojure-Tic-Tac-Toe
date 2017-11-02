@@ -32,6 +32,23 @@
            (token-at { :X #{:1} :O #{} } :1 ))
         "it returns the token key for X")))
 
+(deftest get-available-moves-test
+  (testing "when no move has been made"
+    (is (= valid-moves
+           (get-available-moves empty-board))
+        "it will return all the moves"))
+  (testing "when a move has been made"
+    (is (= #{:2 :3 :4 :5 :6 :7 :8 :9}
+           (get-available-moves { :X #{:1} :O #{} }))
+        "it should not be in the set of available moves"))
+  (testing "when each player has made 1 move"
+    (is (= #{:3 :4 :5 :6 :7 :8 :9}
+           (get-available-moves { :X #{:1} :O #{:2} }))
+        "it should return all moves except for those 2"))
+  (testing "when the board is full"
+    (is (= #{}
+           (get-available-moves { :X #{:1 :2 :3 :4 :5} :O #{:6 :7 :8 :9} })))))
+
 (deftest is-move-invalid?-test
   (testing "when a valid move is passed in"
     (is (= true
