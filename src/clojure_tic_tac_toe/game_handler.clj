@@ -28,8 +28,10 @@
   [{:keys [board player]} move]
   (let [updated-board (board/add-move board move player)
         next-player (switch-player board player)
-        game-is-finished (is-game-finished? updated-board)]
+        game-is-finished (is-game-finished? updated-board)
+        winner (win-checker/which-player-won? updated-board player)]
     { :board updated-board
       :player next-player
-      :finished? game-is-finished }))
+      :finished? game-is-finished
+      :winner winner }))
 
