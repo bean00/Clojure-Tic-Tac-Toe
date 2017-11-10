@@ -14,6 +14,6 @@
   (list #{:1 :5 :9}
         #{:3 :5 :7}))
 
-(defn get-winning-sets []
+(def winning-sets
   (concat winning-rows winning-columns winning-diagonals))
 

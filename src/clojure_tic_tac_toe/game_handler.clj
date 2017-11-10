@@ -13,6 +13,10 @@
   [game-state]
   (:finished? game-state))
 
+(defn get-winner
+  [game-state]
+  (:winner game-state))
+
 (defn- switch-player
   [board player]
   (let [tokens (keys board)]
@@ -28,7 +32,7 @@
   [{:keys [board player]} move]
   (let [updated-board (board/add-move board move player)
         next-player (switch-player board player)
-        game-is-finished (is-game-finished? updated-board)
+        game-is-finished (is-game-finished? updated-board player)
         winner (win-checker/which-player-won? updated-board player)]
     { :board updated-board
       :player next-player

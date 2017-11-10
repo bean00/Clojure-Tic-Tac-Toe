@@ -17,11 +17,13 @@
 
 (defn- play-all-rounds []
   (loop [updated-game-state (play-round game_handler/starting-game-state)]
-    (when (not (game_handler/finished? updated-game-state))
+    (if (game_handler/finished? updated-game-state)
+      updated-game-state
       (recur (play-round updated-game-state)))))
 
 (defn play-game []
   (display-initial-output)
-  (play-all-rounds)
-  (io/display-game-over-message))
+  (let [final-game-state (play-all-rounds)
+        winner (game_handler/get-winner final-game-state)]
+   (io/display-game-over-message winner)))
 
