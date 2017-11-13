@@ -68,3 +68,10 @@
                (display-board { :X #{:1 :3} :O #{:5} })))
           "it displays the board correctly"))))
 
+(deftest display-game-over-message-test
+  (testing "when the game is over"
+    (is (= "\nGame over.\n"
+           (with-out-str
+             (display-game-over-message)))
+        "it displays the correct message")))
+
