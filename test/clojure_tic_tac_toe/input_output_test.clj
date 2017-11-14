@@ -12,13 +12,44 @@
              (display-introduction)))
         "it displays an introduction")))
 
-(deftest display-instructions-test
+(deftest display-game-mode-instructions-test
   (testing "when the player has seen the introduction"
-    (is (= (join-lines ["To enter a move, type a number from 1-9."
+    (is (= (join-lines ["Please enter one of the following:"
+                        "- \"h\" to play another person\n\n"])
+           (with-out-str
+             (display-game-mode-instructions)))
+        "it displays the instructions for choosing the game mode")))
+
+(deftest display-angle-bracket-test
+  (testing "when waiting for input from the user"
+    (is (= "> "
+           (with-out-str
+             (display-angle-bracket)))
+        "it displays the angle bracket")))
+
+(deftest get-game-mode-test
+  (testing "when a valid game mode is entered"
+    (is (= :h
+           (with-in-str "h\n"
+             (get-game-mode)))
+        "it returns the game mode as a keyword")))
+
+(deftest display-result-of-game-mode-choice-test
+  (testing "when the player chooses to play another person"
+    (is (= true
+           (str/includes?
+             (with-out-str
+               (display-result-of-game-mode-choice :h))
+             "play another person"))
+        "it displays the 'playing person' message")))
+
+(deftest display-game-instructions-test
+  (testing "when the player has seen the introduction"
+    (is (= (join-lines ["\nTo enter a move, type a number from 1-9."
                         "It will be added to the board based on"
                         "the following positions:\n\n"])
            (with-out-str
-             (display-instructions)))
+             (display-game-instructions)))
         "it displays the instructions")))
 
 (deftest get-move-test
