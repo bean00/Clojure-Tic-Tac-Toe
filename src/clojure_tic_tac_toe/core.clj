@@ -1,5 +1,5 @@
 (ns clojure-tic-tac-toe.core
-  (:require [clojure-tic-tac-toe.console_ui :as console_ui]))
+  (:require [clojure-tic-tac-toe.console_ui.console_ui :as console_ui]))
 
 (defn -main
   "Tic Tac Toe program."

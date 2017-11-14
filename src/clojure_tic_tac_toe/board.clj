@@ -6,11 +6,7 @@
                    :4 :5 :6
                    :7 :8 :9})
 
-(def empty-board { :X #{} :O #{} })
-
-(defn add-move
-  [board move player]
-  (update board player conj move))
+(def empty-board {:X #{}, :O #{}})
 
 (defn token-at
   [board position]
@@ -30,6 +26,10 @@
   [board move]
   (let [available-moves (get-available-moves board)]
     (not (contains? available-moves move))))
+
+(defn add-move
+  [board move player]
+  (update board player conj move))
 
 (defn is-board-full?
   [board]

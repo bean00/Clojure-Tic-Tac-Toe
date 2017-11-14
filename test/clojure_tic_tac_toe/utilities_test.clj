@@ -30,3 +30,14 @@
            (contains-set? (list #{:1 :2}) #{:3 :4}))
         "it returns false")))
 
+(deftest set-to-list-or-nil-test
+  (testing "when the set contains 4 keywords"
+    (is (= '(:1 :2 :3 :4)
+           (sort
+             (set-to-list-or-nil #{:4 :3 :2 :1})))
+        "it returns the keywords in a list (unsorted)"))
+  (testing "when the set is empty"
+    (is (= nil
+           (set-to-list-or-nil #{}))
+        "it returns nil")))
+

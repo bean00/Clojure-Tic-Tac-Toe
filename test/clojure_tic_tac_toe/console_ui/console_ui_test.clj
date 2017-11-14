@@ -1,7 +1,7 @@
-(ns clojure-tic-tac-toe.console_ui_test
+(ns clojure-tic-tac-toe.console_ui.console_ui_test
   (:require [clojure.string :as str]
             [clojure.test :refer [deftest testing is]]
-            [clojure-tic-tac-toe.console_ui :refer :all]))
+            [clojure-tic-tac-toe.console_ui.console_ui :refer :all]))
 
 (defn- play-game-output []
   (with-out-str
