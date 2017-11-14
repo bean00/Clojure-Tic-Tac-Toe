@@ -5,11 +5,11 @@
 
 (defn- play-game-output []
   (with-out-str
-    (with-in-str "1\n2\n3\n4\n5\n6\n7\n8\n9\n"
+    (with-in-str "1\n2\n5\n9\n6\n4\n3\n7\n8\n"
       (play-game))))
 
 (deftest play-game-test
-  (testing "when a full game is played"
+  (testing "when a game is played that ends in a tie"
     (is (= true
            (str/includes?
              (play-game-output)
@@ -33,6 +33,14 @@
     (is (= true
            (str/includes?
              (play-game-output)
-             "over"))
-        "it displays a final message")))
+             "tie"))
+        "it displays that the game ended in a tie"))
+  (testing "when a player wins"
+    (is (= true
+           (str/includes?
+             (with-out-str
+               (with-in-str "1\n4\n2\n5\n3\n"
+                 (play-game)))
+             "won"))
+        "it displays that the player won")))
 

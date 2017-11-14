@@ -74,6 +74,9 @@
   [board]
   (println (create-view-from-board board)))
 
-(defn display-game-over-message []
-  (println "\nGame over."))
+(defn display-game-over-message
+  [winner]
+  (if (contains? #{:X :O} winner)
+    (println (format "\nGame over. Player %s won." (name winner)))
+    (println "\nGame over. Ended in a tie.")))
 

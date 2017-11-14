@@ -15,11 +15,20 @@
            (finished? starting-game-state))
         "it returns false")))
 
+(deftest get-winner-test
+  (testing "when getting the winner from a winning game state"
+    (is (= :X
+           (get-winner {:board {:X #{:1 :2 :3}, :O #{:4 :5}}, :player :O,
+                        :finished? true, :winner :X}))
+        "it returns the winner")))
+
 (deftest create-next-game-state-test
-  (testing "when a game state and a move are passed in"
-    (is (= {:board {:X #{:1 :5 :6 :3 :8}, :O #{:2 :9 :4 :7}}, :player :O, :finished? true}
+  (testing "when a player wins"
+    (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}}, :player :O,
+            :finished? true, :winner :X}
            (create-next-game-state
-             {:board {:X #{:1 :5 :6 :3}, :O #{:2 :9 :4 :7}}, :player :X, :finished? false}
-             :8))
+             {:board {:X #{:1 :2}, :O #{:4 :5}}, :player :X,
+              :finished? false, :winner false}
+             :3))
         "it returns the properly updated game state")))
 
