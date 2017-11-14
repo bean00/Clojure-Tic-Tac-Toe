@@ -6,8 +6,31 @@
 (defn display-introduction []
   (println "This is a Tic Tac Toe program.\n"))
 
-(defn display-instructions []
-  (println (join-lines ["To enter a move, type a number from 1-9."
+(defn display-game-mode-instructions []
+  (println (join-lines ["Please enter one of the following:"
+                        "- \"h\" to play another person\n"])))
+
+(defn display-angle-bracket []
+  (print "> ")
+  (flush))
+
+(defn- get-input []
+  (keyword (str/trim (read-line))))
+
+(defn get-game-mode []
+  (get-input))
+
+(defn- display-playing-person-message []
+  (println (join-lines ["\nOk, you chose to play another person."
+                        ""
+                        "You are Player X, and you will go first."])))
+
+(defn display-result-of-game-mode-choice
+  [game-mode]
+  (display-playing-person-message))
+
+(defn display-game-instructions []
+  (println (join-lines ["\nTo enter a move, type a number from 1-9."
                         "It will be added to the board based on"
                         "the following positions:\n"])))
 
@@ -15,9 +38,6 @@
 (defn- prompt-player-for-move
   [player]
   (printf "\nPlayer %s, please enter your move: ", (name player)))
-
-(defn- get-input []
-  (keyword (str/trim (read-line))))
 
 (defn- display-invalid-move-message
   [move]
@@ -28,9 +48,6 @@
   (printf
     "\n<!> Error: Move \"%s\" was already taken. Must move to an open position.",
     (name move)))
-
-(defn- get-input []
-  (keyword (str/trim (read-line))))
 
 (defn get-move
   [board player]
