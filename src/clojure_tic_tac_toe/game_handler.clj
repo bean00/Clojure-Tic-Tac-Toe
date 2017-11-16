@@ -13,11 +13,13 @@
     :winner false,
     :move-strategies move-strategies })
 
+
 (def valid-game-modes #{:h :c})
 
 (defn is-game-mode-invalid?
   [game-mode]
   (not (contains? valid-game-modes game-mode)))
+
 
 (defn get-board
   [game-state]
@@ -63,6 +65,7 @@
   [game-state move]
   (let [board (get-board game-state)]
     (board/has-move-been-taken? board move)))
+
 
 
 (defn- switch-player
