@@ -7,12 +7,18 @@
   (testing "when having the computer move"
     (with-out-str
       (is (= :1
-             (have-computer-move {:board {:X #{:2 :3 :4 :5}, :O #{:6 :7 :8 :9}}}))
+             (have-computer-move {:X #{:2 :3 :4 :5}, :O #{:6 :7 :8 :9}}))
           "it returns a move"))
     (is (= true
            (str/includes?
              (with-out-str
                (have-computer-move {:X #{}, :O #{}}))
              "computer moved"))
-        "it displays that the computer moved")))
+        "it displays that the computer moved"))
+  (testing "when passing in more than 1 argument"
+    (with-out-str
+      (is (= :1
+             (have-computer-move {:X #{:2 :3 :4 :5}, :O #{:6 :7 :8 :9}}
+                                     "test"))
+          "it still returns a move"))))
 
