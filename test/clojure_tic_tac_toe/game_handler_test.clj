@@ -25,16 +25,6 @@
            (create-game-state h-vs-h-strategies))
         "it returns the correct game state")))
 
-(deftest is-game-mode-invalid?-test
-  (testing "when an invalid game mode is passed in"
-    (is (= true
-           (is-game-mode-invalid? :X))
-        "it returns true"))
-  (testing "when a valid game mode is passed in"
-    (is (= false
-           (is-game-mode-invalid? :h))
-        "it returns false")))
-
 (deftest get-board-test
   (testing "when getting the board from a winning game state"
     (is (= {:X #{:1 :5 :9}, :O #{:2 :3}}
