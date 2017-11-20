@@ -1,14 +1,14 @@
 (ns clojure-tic-tac-toe.console_ui.console_ui_human_move
-  (:require [clojure-tic-tac-toe.board :as board]
-            [clojure-tic-tac-toe.console_ui.input_output :as io]))
+  (:require [clojure-tic-tac-toe.console_ui.input_output :as io]
+            [clojure-tic-tac-toe.game_handler :as game_handler]))
 
 (defn get-human-move
   [board player]
   (loop [move (io/get-move player)]
     (cond
-      (board/is-move-invalid? move)
+      (game_handler/is-move-invalid? move)
         (recur (io/get-move-if-move-is-invalid move player))
-      (board/has-move-been-taken? board move)
+      (game_handler/has-move-been-taken? board move)
         (recur (io/get-move-if-move-was-taken move player))
       :else
         move)))

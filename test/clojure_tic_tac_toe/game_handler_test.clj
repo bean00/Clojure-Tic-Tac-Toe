@@ -99,3 +99,39 @@
              :3))
         "it returns the properly updated game state")))
 
+(deftest display-board-test
+  (testing "when a game state is passed in"
+    (is (= true
+           (str/includes?
+             (with-out-str
+               (display-board x-won-game-state))
+             " X | O | O "))
+        "it displays the board")))
+
+(deftest display-game-over-message-test
+  (testing "when a player has won"
+    (is (= true
+           (str/includes?
+             (with-out-str
+               (display-game-over-message :X))
+             "won"))
+        "it displays the appropriate message")))
+
+(deftest is-move-invalid?-test
+  (testing "when an invalid move is passed in"
+    (is (= true
+           (is-move-invalid? :f))
+        "it returns true")))
+
+(deftest has-move-been-taken?-test
+  (testing "when the move has been taken"
+    (is (= true
+           (has-move-been-taken? {:X #{:1}, :O #{}} :1))
+        "it returns true")))
+
+(deftest get-available-moves-test
+  (testing "when 5 moves have been made"
+    (is (= #{:3 :6 :7 :8}
+           (get-available-moves {:X #{:1 :2 :9}, :O #{:4 :5}}))
+        "it returns the available moves")))
+

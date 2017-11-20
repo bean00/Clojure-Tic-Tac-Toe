@@ -1,5 +1,6 @@
 (ns clojure-tic-tac-toe.game_handler
   (:require [clojure-tic-tac-toe.board :as board]
+            [clojure-tic-tac-toe.console_ui.input_output :as io]
             [clojure-tic-tac-toe.win_checker :as win-checker]))
 
 (def empty-board board/empty-board)
@@ -87,4 +88,31 @@
       :finished? game-is-finished
       :winner winner
       :move-strategies move-strategies }))
+
+
+(defn- get-board
+  [game-state]
+  (:board game-state))
+
+(defn display-board
+  [game-state]
+  (io/display-board (get-board game-state)))
+
+
+(defn display-game-over-message
+  [winner]
+  (io/display-game-over-message winner))
+
+
+(defn is-move-invalid?
+  [move]
+  (board/is-move-invalid? move))
+
+(defn has-move-been-taken?
+  [board move]
+  (board/has-move-been-taken? board move))
+
+(defn get-available-moves
+  [board]
+  (board/get-available-moves board))
 
