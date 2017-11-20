@@ -58,7 +58,7 @@
                         "the following positions:\n"])))
 
 
-(defn prompt-player-for-move
+(defn- prompt-player-for-move
   [player]
   (printf "\nPlayer %s, please enter your move: ", (name player)))
 

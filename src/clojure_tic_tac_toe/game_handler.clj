@@ -1,6 +1,5 @@
 (ns clojure-tic-tac-toe.game_handler
-  (:require [clojure-tic-tac-toe.utilities :as utilities]
-            [clojure-tic-tac-toe.board :as board]
+  (:require [clojure-tic-tac-toe.board :as board]
             [clojure-tic-tac-toe.win_checker :as win-checker]))
 
 (def empty-board board/empty-board)
