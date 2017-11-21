@@ -17,3 +17,16 @@
            (make-random-move {:board {:X #{:1 :2 :3 :4 :5}, :O #{:6 :7 :8 :9}}}))
         "it returns nil")))
 
+(deftest make-minimax-move-test
+  (testing "when the computer can win now (2 moves left)"
+    (is (= :6
+           (make-minimax-move
+             {:board {:X #{:1 :2 :7 :9}, :O #{:4 :5 :8}}, :player :O,
+              :finished? false}))
+        "it returns the move to win"))
+  (testing "when there are no moves left"
+    (is (= :invalid-move
+           (make-minimax-move
+             {:board {:X #{:1 :5 :6 :3 :8}, :O #{:2 :9 :4 :7}}, :player :O,
+              :finished? true})))))
+

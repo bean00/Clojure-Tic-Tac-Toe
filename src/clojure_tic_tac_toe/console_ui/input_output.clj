@@ -94,14 +94,9 @@
   (println "\nThe computer moved."))
 
 
-
 (defn display-board
   [game-state]
   (println (view/create-view game-state)))
-
-(defn display-example-board []
-  (display-board view/empty-board))
-
 
 
 (defn display-game-over-message

@@ -1,10 +1,8 @@
 (ns clojure-tic-tac-toe.game_handler_test
-  (:require [clojure.string :as str]
-            [clojure.test :refer [deftest testing is]]
+  (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.board :as board]
             [clojure-tic-tac-toe.console_ui.console_ui_computer_move :as ui_comp_move]
             [clojure-tic-tac-toe.console_ui.console_ui_human_move :as ui_human_move]
-            [clojure-tic-tac-toe.console_ui.input_output :as io]
             [clojure-tic-tac-toe.game_handler :refer :all]))
 
 (def h-vs-h-strategies
@@ -25,11 +23,11 @@
            (create-game-state h-vs-h-strategies))
         "it returns the correct game state")))
 
-(deftest get-board-test
-  (testing "when getting the board from a winning game state"
-    (is (= {:X #{:1 :5 :9}, :O #{:2 :3}}
-           (get-board x-won-game-state))
-        "it returns the board")))
+;(deftest get-board-test
+;  (testing "when getting the board from a winning game state"
+;    (is (= {:X #{:1 :5 :9}, :O #{:2 :3}}
+;           (get-board x-won-game-state))
+;        "it returns the board")))
 
 (deftest get-player-test
   (testing "when getting the player from a winning game state"
@@ -70,10 +68,11 @@
         "it returns the token key for X")))
 
 (deftest get-available-moves-test
-  (testing "when 5 moves have been made"
-    (is (= #{:3 :6 :7 :8}
-           (get-available-moves {:board {:X #{:1 :2 :9}, :O #{:4 :5}}}))
-        "it returns the available moves")))
+  (testing "when moves have been made"
+    (is (= '(:1 :2 :3 :4)
+           (sort
+             (get-available-moves {:board {:X #{:5 :7 :8}, :O #{:6 :9}}})))
+        "it returns a list of available moves")))
 
 (deftest is-move-invalid?-test
   (testing "when an invalid move is passed in"
@@ -87,51 +86,27 @@
            (has-move-been-taken? {:board {:X #{:1}, :O #{}}} :1))
         "it returns true")))
 
-(deftest create-next-game-state-test
+(deftest calculate-score-test
+  (testing "when Player X won"
+    (is (= 1
+           (calculate-score {:board {:X #{:1 :2 :3} :O #{}}}))
+        "it returns the score for X winning")))
+
+(deftest switch-player-test
+  (testing "when starting with one player"
+    (is (= :O
+           (switch-player :X))
+        "it returns the other player")))
+
+(deftest add-move-test
   (testing "when a player wins"
     (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
             :player :O, :finished? true, :winner :X,
             :move-strategies h-vs-h-strategies}
-           (create-next-game-state
+           (add-move
              {:board {:X #{:1 :2}, :O #{:4 :5}},
               :player :X, :finished? false, :winner false,
               :move-strategies h-vs-h-strategies}
              :3))
         "it returns the properly updated game state")))
-
-(deftest display-board-test
-  (testing "when a game state is passed in"
-    (is (= true
-           (str/includes?
-             (with-out-str
-               (display-board x-won-game-state))
-             " X | O | O "))
-        "it displays the board")))
-
-(deftest display-game-over-message-test
-  (testing "when a player has won"
-    (is (= true
-           (str/includes?
-             (with-out-str
-               (display-game-over-message :X))
-             "won"))
-        "it displays the appropriate message")))
-
-(deftest is-move-invalid?-test
-  (testing "when an invalid move is passed in"
-    (is (= true
-           (is-move-invalid? :f))
-        "it returns true")))
-
-(deftest has-move-been-taken?-test
-  (testing "when the move has been taken"
-    (is (= true
-           (has-move-been-taken? {:X #{:1}, :O #{}} :1))
-        "it returns true")))
-
-(deftest get-available-moves-test
-  (testing "when 5 moves have been made"
-    (is (= #{:3 :6 :7 :8}
-           (get-available-moves {:X #{:1 :2 :9}, :O #{:4 :5}}))
-        "it returns the available moves")))
 

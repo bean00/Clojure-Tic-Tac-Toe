@@ -2,8 +2,6 @@
   (:require [clojure-tic-tac-toe.game_handler :as game_handler]
             [clojure-tic-tac-toe.utilities :refer [join-lines]]))
 
-(def empty-board game_handler/empty-board)
-
 (def tokens {:1 "1", :2 "2", :3 "3"
              :4 "4", :5 "5", :6 "6"
              :7 "7", :8 "8", :9 "9"

@@ -3,7 +3,7 @@
             [clojure-tic-tac-toe.console_ui.input_output :as io]))
 
 (defn have-computer-move
-  [board & args]
+  [game-state]
   (io/display-computer-move-message)
-  (computer_move/make-random-move board))
+  (computer_move/make-minimax-move game-state))
 

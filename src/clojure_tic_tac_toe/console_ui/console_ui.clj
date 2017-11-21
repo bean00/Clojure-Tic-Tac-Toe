@@ -1,13 +1,14 @@
 (ns clojure-tic-tac-toe.console_ui.console_ui
-  (:require [clojure-tic-tac-toe.game_handler :as game_handler]
-            [clojure-tic-tac-toe.console_ui.console_ui_game_setup :as ui_game_setup]))
+  (:require [clojure-tic-tac-toe.console_ui.console_ui_game_setup :as ui_game_setup]
+            [clojure-tic-tac-toe.console_ui.input_output :as io]
+            [clojure-tic-tac-toe.game_handler :as game_handler]))
 
 (defn- play-round
   [game-state]
   (let [get-move (game_handler/get-move-strategy game-state)
         move (get-move game-state)
-        next-game-state (game_handler/create-next-game-state game-state move)]
-    (game_handler/display-board next-game-state)
+        next-game-state (game_handler/add-move game-state move)]
+    (io/display-board next-game-state)
     next-game-state))
 
 (defn- play-all-rounds
@@ -23,5 +24,5 @@
         starting-game-state (game_handler/create-game-state move-strategies)
         final-game-state (play-all-rounds starting-game-state)
         winner (game_handler/get-winner final-game-state)]
-   (game_handler/display-game-over-message winner)))
+   (io/display-game-over-message winner)))
 

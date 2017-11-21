@@ -1,9 +1,11 @@
 (ns clojure-tic-tac-toe.game_handler
   (:require [clojure-tic-tac-toe.board :as board]
-            [clojure-tic-tac-toe.console_ui.input_output :as io]
-            [clojure-tic-tac-toe.win_checker :as win-checker]))
+            [clojure-tic-tac-toe.utilities :refer [set-to-list-or-nil]]
+            [clojure-tic-tac-toe.win_checker :as win_checker]))
 
 (def empty-board board/empty-board)
+
+(def tokens (keys empty-board))
 
 (defn create-game-state
   [move-strategies]
@@ -14,7 +16,7 @@
     :move-strategies move-strategies })
 
 
-(defn get-board
+(defn- get-board
   [game-state]
   (:board game-state))
 
@@ -47,8 +49,10 @@
 
 (defn get-available-moves
   [game-state]
-  (let [board (get-board game-state)]
-    (board/get-available-moves board)))
+  (let [board (get-board game-state)
+        available-moves (board/get-available-moves board)
+        list-of-moves (set-to-list-or-nil available-moves)]
+    list-of-moves))
 
 (defn is-move-invalid?
   [move]
@@ -60,59 +64,34 @@
     (board/has-move-been-taken? board move)))
 
 
-
-(defn- switch-player
+(defn calculate-score
   [game-state]
-  (let [board (get-board game-state)
-        player (get-player game-state)
-        tokens (keys board)]
-    (first
-      (remove #{player} tokens))))
+  (let [board (get-board game-state)]
+    (win_checker/calculate-score board)))
+
+
+(defn switch-player
+  [player]
+  (first
+    (remove #{player} tokens)))
 
 (defn- is-game-finished?
-  [updated-board player]
-  (or (win-checker/has-player-won? updated-board player)
-      (board/is-board-full? updated-board)))
+  [board]
+  (or (win_checker/did-either-player-win? board)
+      (board/is-board-full? board)))
 
-(defn create-next-game-state
+(defn add-move
   [game-state move]
   (let [board (get-board game-state)
         player (get-player game-state)
         updated-board (board/add-move board move player)
-        next-player (switch-player game-state)
-        game-is-finished (is-game-finished? updated-board player)
-        winner (win-checker/which-player-won? updated-board player)
+        next-player (switch-player player)
+        game-is-finished (is-game-finished? updated-board)
+        winner (win_checker/which-player-won? updated-board)
         move-strategies (get-move-strategies game-state)]
     { :board updated-board
       :player next-player
       :finished? game-is-finished
       :winner winner
       :move-strategies move-strategies }))
-
-
-(defn- get-board
-  [game-state]
-  (:board game-state))
-
-(defn display-board
-  [game-state]
-  (io/display-board (get-board game-state)))
-
-
-(defn display-game-over-message
-  [winner]
-  (io/display-game-over-message winner))
-
-
-(defn is-move-invalid?
-  [move]
-  (board/is-move-invalid? move))
-
-(defn has-move-been-taken?
-  [board move]
-  (board/has-move-been-taken? board move))
-
-(defn get-available-moves
-  [board]
-  (board/get-available-moves board))
 

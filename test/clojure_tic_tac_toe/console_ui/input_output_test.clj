@@ -150,19 +150,6 @@
                (display-board {:board {:X #{:1 :3}, :O #{:5}}})))
           "it displays the board correctly"))))
 
-(deftest display-example-board-test
-  (testing "when displaying an example board"
-    (let [view (join-lines [" 1 | 2 | 3 "
-                            "---+---+---"
-                            " 4 | 5 | 6 "
-                            "---+---+---"
-                            " 7 | 8 | 9 "
-                            ""])]
-      (is (= view
-             (with-out-str
-               (display-example-board)))
-          "it displays the board correctly"))))
-
 (deftest display-game-over-message-test
   (testing "when the game ended in a tie"
     (is (= "\nGame over. Ended in a tie.\n"
