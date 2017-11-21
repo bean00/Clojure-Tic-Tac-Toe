@@ -42,6 +42,10 @@
     (player (:move-strategies game-state))))
 
 
+(defn add-move
+  [board move player]
+  (board/add-move board move player))
+
 (defn token-at
   [game-state position]
   (let [board (get-board game-state)]

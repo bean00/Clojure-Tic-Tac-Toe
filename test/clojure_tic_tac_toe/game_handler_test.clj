@@ -23,12 +23,6 @@
            (create-game-state h-vs-h-strategies))
         "it returns the correct game state")))
 
-;(deftest get-board-test
-;  (testing "when getting the board from a winning game state"
-;    (is (= {:X #{:1 :5 :9}, :O #{:2 :3}}
-;           (get-board x-won-game-state))
-;        "it returns the board")))
-
 (deftest get-player-test
   (testing "when getting the player from a winning game state"
     (is (= :O
@@ -73,6 +67,12 @@
            (sort
              (get-available-moves {:board {:X #{:5 :7 :8}, :O #{:6 :9}}})))
         "it returns a list of available moves")))
+
+(deftest get-sorted-moves-test
+  (testing "when moves have been made"
+    (is (= '(:1 :2 :3 :4)
+           (get-sorted-moves {:X #{:5 :7 :8}, :O #{:6 :9}}))
+        "it returns a list of sorted available moves")))
 
 (deftest is-move-invalid?-test
   (testing "when an invalid move is passed in"

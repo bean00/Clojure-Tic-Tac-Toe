@@ -19,9 +19,9 @@
 
 (defn- set-to-sorted-list
   [set-arg]
-  (into () set-arg))
+  (sort (into () set-arg)))
 
-(defn set-to-list-or-nil
+(defn set-to-sorted-list-or-nil
   [set-arg]
   (let [sorted-list (set-to-sorted-list set-arg)]
     (if (empty? sorted-list)
