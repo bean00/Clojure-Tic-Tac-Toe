@@ -1,8 +1,8 @@
-(ns clojure-tic-tac-toe.view_test
+(ns clojure-tic-tac-toe.default_view_test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.game_handler :as game_handler]
             [clojure-tic-tac-toe.utilities :refer [join-lines]]
-            [clojure-tic-tac-toe.view :refer :all]))
+            [clojure-tic-tac-toe.default_view :refer :all]))
 
 (deftest create-view-test
   (testing "when an empty board is passed in"

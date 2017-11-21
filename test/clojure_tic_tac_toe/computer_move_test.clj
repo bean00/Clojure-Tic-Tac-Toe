@@ -1,20 +1,34 @@
 (ns clojure-tic-tac-toe.computer_move_test
   (:require [clojure.test :refer [deftest testing is]]
-            [clojure-tic-tac-toe.computer_move :refer :all]))
+            [clojure-tic-tac-toe.computer_move :refer :all]
+            [clojure-tic-tac-toe.default_valid_moves :as default_valid_moves]
+            [clojure-tic-tac-toe.default_winning_moves :as default_winning_moves]))
+
+(def valid-moves
+  default_valid_moves/valid-moves)
+
+(def winning-moves
+  default_winning_moves/winning-moves)
+
+(def initial-data
+  {:moves valid-moves})
 
 (deftest make-random-move-test
   (testing "when the computer has 1 move left"
     (is (= :9
-           (make-random-move {:board {:X #{:1 :2 :3 :4}, :O #{:5 :6 :7 :8}}}))
+           (make-random-move {:board {:X #{:1 :2 :3 :4}, :O #{:5 :6 :7 :8}}}
+                             initial-data))
         "it returns that move"))
   (testing "when the computer has 5 moves left"
-    (let [move (make-random-move {:board {:X #{:6 :7}, :O #{:8 :9}}})]
+    (let [move (make-random-move {:board {:X #{:6 :7}, :O #{:8 :9}}}
+                                 initial-data)]
       (is (= true
              (contains? #{:1 :2 :3 :4 :5} move))
           "it returns one of those moves")))
   (testing "when there are no moves left"
     (is (= nil
-           (make-random-move {:board {:X #{:1 :2 :3 :4 :5}, :O #{:6 :7 :8 :9}}}))
+           (make-random-move {:board {:X #{:1 :2 :3 :4 :5}, :O #{:6 :7 :8 :9}}}
+                             initial-data))
         "it returns nil")))
 
 (deftest make-minimax-move-test
@@ -22,11 +36,13 @@
     (is (= :6
            (make-minimax-move
              {:board {:X #{:1 :2 :7 :9}, :O #{:4 :5 :8}}, :player :O,
-              :finished? false}))
+              :finished? false}
+             initial-data))
         "it returns the move to win"))
   (testing "when there are no moves left"
     (is (= :invalid-move
            (make-minimax-move
              {:board {:X #{:1 :5 :6 :3 :8}, :O #{:2 :9 :4 :7}}, :player :O,
-              :finished? true})))))
+              :finished? true}
+             initial-data)))))
 
