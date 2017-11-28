@@ -1,6 +1,6 @@
 # Tic Tac Toe in Clojure
 
-A program to play Tic Tac Toe, written in Clojure.
+A program to play Tic Tac Toe, with an option to play against a computer. It was written in Clojure.
 
 ## Instructions
 1. Clone or download this repository onto your local machine
@@ -10,4 +10,5 @@ A program to play Tic Tac Toe, written in Clojure.
     - Run the program:
         - Run `lein run`
 3. Follow the program's instructions
+    - Single Player Mode: you vs. a computer
     - Multi Player Mode: you vs. another person

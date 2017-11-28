@@ -17,3 +17,14 @@
   (true?
     (some #(set/subset? % set-to-check) coll)))
 
+(defn- set-to-list
+  [set-arg]
+  (into () set-arg))
+
+(defn set-to-list-or-nil
+  [set-arg]
+  (let [unsorted-list (set-to-list set-arg)]
+    (if (empty? unsorted-list)
+      nil
+      unsorted-list)))
+
