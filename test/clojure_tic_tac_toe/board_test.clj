@@ -5,11 +5,11 @@
 (deftest token-at-test
   (testing "when neither player has moved to the position"
     (is (= :1
-           (token-at empty-board :1 ))
+           (token-at empty-board :1))
         "it returns the token key for that position"))
   (testing "when X has moved to position 1"
     (is (= :X
-           (token-at {:X #{:1}, :O #{}} :1 ))
+           (token-at {:X #{:1}, :O #{}} :1))
         "it returns the token key for X")))
 
 (deftest get-available-moves-test
