@@ -6,13 +6,15 @@
 (deftest have-computer-move-test
   (testing "when having the computer move"
     (with-out-str
-      (is (= :1
-             (have-computer-move {:board {:X #{:2 :3 :4 :5}, :O #{:6 :7 :8 :9}}}))
+      (is (= :3
+             (have-computer-move
+               {:board {:X #{:1 :2 :8 :6}, :O #{:4 :5 :7 :9}}, :player :X}))
           "it returns a move"))
     (is (= true
            (str/includes?
              (with-out-str
-               (have-computer-move {:X #{}, :O #{}}))
+               (have-computer-move
+                 {:board {:X #{:1 :2 :3 :4}, :O #{:5 :6 :7 :8}}, :player :X}))
              "computer moved"))
         "it displays that the computer moved")))
 

@@ -5,5 +5,5 @@
 (defn have-computer-move
   [game-state]
   (io/display-computer-move-message)
-  (computer_move/make-random-move game-state))
+  (computer_move/make-minimax-move game-state))
 

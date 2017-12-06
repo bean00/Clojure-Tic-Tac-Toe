@@ -2,7 +2,8 @@
   (:require [clojure-tic-tac-toe.console_ui.console_ui_computer_move :as ui_comp_move]
             [clojure-tic-tac-toe.console_ui.console_ui_game_mode :as ui_game_mode]
             [clojure-tic-tac-toe.console_ui.console_ui_human_move :as ui_human_move]
-            [clojure-tic-tac-toe.console_ui.input_output :as io]))
+            [clojure-tic-tac-toe.console_ui.input_output :as io]
+            [clojure-tic-tac-toe.game_handler :as game_handler]))
 
 (defn- display-initial-output []
   (io/display-introduction)
@@ -21,7 +22,7 @@
         internal-game-mode (convert-game-mode user-game-mode)]
     (io/display-result-of-game-mode-choice internal-game-mode)
     (io/display-game-instructions)
-    (io/display-example-board)
+    (io/display-board game_handler/empty-board)
     internal-game-mode))
 
 (defn set-up-game []
