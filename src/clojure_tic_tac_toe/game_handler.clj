@@ -9,7 +9,7 @@
 
 (defn create-game-state
   [move-strategies]
-  { :board board/empty-board,
+  { :board empty-board,
     :player :X,
     :finished? false,
     :winner false,
@@ -41,10 +41,6 @@
   (let [player (get-player game-state)]
     (player (:move-strategies game-state))))
 
-
-(defn add-move
-  [board move player]
-  (board/add-move board move player))
 
 (defn token-at
   [game-state position]

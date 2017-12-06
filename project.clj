@@ -10,3 +10,4 @@
   :target-path "target/%s"
   :main clojure-tic-tac-toe.core
   :aot [clojure-tic-tac-toe.core])
+

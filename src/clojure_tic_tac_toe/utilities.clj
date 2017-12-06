@@ -17,14 +17,14 @@
   (true?
     (some #(set/subset? % set-to-check) coll)))
 
-(defn- set-to-sorted-list
+(defn- set-to-list
   [set-arg]
-  (sort (into () set-arg)))
+  (into () set-arg))
 
-(defn set-to-sorted-list-or-nil
+(defn set-to-list-or-nil
   [set-arg]
-  (let [sorted-list (set-to-sorted-list set-arg)]
-    (if (empty? sorted-list)
+  (let [unsorted-list (set-to-list set-arg)]
+    (if (empty? unsorted-list)
       nil
-      sorted-list)))
+      unsorted-list)))
 

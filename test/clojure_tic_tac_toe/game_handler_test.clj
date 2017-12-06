@@ -68,12 +68,6 @@
              (get-available-moves {:board {:X #{:5 :7 :8}, :O #{:6 :9}}})))
         "it returns a list of available moves")))
 
-(deftest get-sorted-moves-test
-  (testing "when moves have been made"
-    (is (= '(:1 :2 :3 :4)
-           (get-sorted-moves {:X #{:5 :7 :8}, :O #{:6 :9}}))
-        "it returns a list of sorted available moves")))
-
 (deftest is-move-invalid?-test
   (testing "when an invalid move is passed in"
     (is (= true
