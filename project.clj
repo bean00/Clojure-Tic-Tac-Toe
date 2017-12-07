@@ -7,7 +7,7 @@
                  [org.clojure/tools.namespace "0.2.11"]
                  [org.clojure/tools.trace "0.7.9"]]
   :profiles {:dev {:source-paths ["startup"]}}
-  :target-path "target/%s"
-  :main clojure-tic-tac-toe.core
-  :aot [clojure-tic-tac-toe.core])
+  :target-path "target/%s")
+  ;:main clojure-tic-tac-toe.core
+  ;:aot [clojure-tic-tac-toe.core])
 

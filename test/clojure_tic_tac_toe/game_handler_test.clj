@@ -5,6 +5,9 @@
             [clojure-tic-tac-toe.console_ui.console_ui_human_move :as ui_human_move]
             [clojure-tic-tac-toe.game_handler :refer :all]))
 
+(def valid-moves
+  #{:1 :2 :3 :4 :5 :6 :7 :8 :9})
+
 (def h-vs-h-strategies
   {:X ui_human_move/get-human-move, :O ui_human_move/get-human-move})
 
@@ -17,10 +20,11 @@
    :move-strategies h-vs-h-strategies})
 
 (deftest create-game-state-test
-  (testing "when creating a game state with move strategies for H vs. H"
+  (testing "when creating a game state with move strategies for H vs. H (3x3)"
     (is (= {:board board/empty-board, :player :X,
-            :finished? false, :winner false, :move-strategies h-vs-h-strategies}
-           (create-game-state h-vs-h-strategies))
+            :finished? false, :winner false, :move-strategies h-vs-h-strategies
+            :moves valid-moves}
+           (create-game-state valid-moves h-vs-h-strategies))
         "it returns the correct game state")))
 
 (deftest get-player-test
@@ -32,7 +36,8 @@
 (deftest finished?-test
   (testing "when checking if an incomplete game is finished"
     (is (= false
-           (finished? (create-game-state ui_human_move/get-human-move)))
+           (finished? (create-game-state
+                        valid-moves ui_human_move/get-human-move)))
         "it returns false")))
 
 (deftest get-winner-test

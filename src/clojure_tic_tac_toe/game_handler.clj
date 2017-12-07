@@ -8,11 +8,12 @@
 (def tokens (keys empty-board))
 
 (defn create-game-state
-  [move-strategies]
+  [valid-moves move-strategies]
   { :board empty-board,
     :player :X,
     :finished? false,
     :winner false,
+    :moves valid-moves,
     :move-strategies move-strategies })
 
 
