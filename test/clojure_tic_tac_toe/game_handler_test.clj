@@ -1,18 +1,13 @@
 (ns clojure-tic-tac-toe.game_handler_test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.board :as board]
-            [clojure-tic-tac-toe.console_ui.console_ui_computer_move :as ui_comp_move]
-            [clojure-tic-tac-toe.console_ui.console_ui_human_move :as ui_human_move]
             [clojure-tic-tac-toe.game_handler :refer :all]))
 
 (def valid-moves
   #{:1 :2 :3 :4 :5 :6 :7 :8 :9})
 
 (def h-vs-h-strategies
-  {:X ui_human_move/get-human-move, :O ui_human_move/get-human-move})
-
-(def h-vs-c-strategies
-  {:X ui_human_move/get-human-move, :O ui_comp_move/have-computer-move})
+  {:X :1, :O :2})
 
 (def x-won-game-state
   {:board {:X #{:1 :5 :9}, :O #{:2 :3}},
@@ -36,8 +31,7 @@
 (deftest finished?-test
   (testing "when checking if an incomplete game is finished"
     (is (= false
-           (finished? (create-game-state
-                        valid-moves ui_human_move/get-human-move)))
+           (finished? (create-game-state valid-moves :1)))
         "it returns false")))
 
 (deftest get-winner-test
@@ -54,10 +48,10 @@
 
 (deftest get-move-strategy-test
   (testing "when getting a move strategy from the game state"
-    (is (= ui_human_move/get-human-move
+    (is (= :1
            (get-move-strategy {:board board/empty-board,
                                :player :X, :finished? false, :winner false,
-                               :move-strategies h-vs-c-strategies}))
+                               :move-strategies h-vs-h-strategies}))
         "it returns the move strategy")))
 
 (deftest token-at-test
