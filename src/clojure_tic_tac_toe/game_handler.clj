@@ -1,5 +1,6 @@
 (ns clojure-tic-tac-toe.game_handler
-  (:require [clojure-tic-tac-toe.board :as board]
+  (:require [clojure.set :as set]
+            [clojure-tic-tac-toe.board :as board]
             [clojure-tic-tac-toe.utilities :refer [set-to-list-or-nil]]
             [clojure-tic-tac-toe.win_checker :as win_checker]))
 
@@ -8,11 +9,11 @@
 (def tokens (keys empty-board))
 
 (defn create-game-state
-  [valid-moves move-strategies]
-  { :board empty-board,
-    :player :X,
-    :finished? false,
-    :winner false,
+  [board player finished? winner valid-moves move-strategies]
+  { :board board,
+    :player player,
+    :finished? finished?,
+    :winner winner,
     :moves valid-moves,
     :move-strategies move-strategies })
 
@@ -33,6 +34,10 @@
   [game-state]
   (:winner game-state))
 
+(defn get-valid-moves
+  [game-state]
+  (:moves game-state))
+
 (defn get-move-strategies
   [game-state]
   (:move-strategies game-state))
@@ -48,21 +53,30 @@
   (let [board (get-board game-state)]
     (board/token-at board position)))
 
-(defn get-available-moves
+
+(defn- get-moves
   [game-state]
   (let [board (get-board game-state)
-        available-moves (board/get-available-moves board)
+        valid-moves (get-valid-moves game-state)]
+    (reduce set/difference valid-moves (vals board))))
+
+(defn get-available-moves
+  [game-state]
+  (let [available-moves (get-moves game-state)
         list-of-moves (set-to-list-or-nil available-moves)]
     list-of-moves))
 
+
 (defn is-move-invalid?
-  [move]
-  (board/is-move-invalid? move))
+  [game-state move]
+  (let [valid-moves (get-valid-moves game-state)]
+    (not (contains? valid-moves move))))
+
 
 (defn has-move-been-taken?
   [game-state move]
-  (let [board (get-board game-state)]
-    (board/has-move-been-taken? board move)))
+  (let [available-moves (get-moves game-state)]
+    (not (contains? available-moves move))))
 
 
 (defn calculate-score
@@ -76,10 +90,16 @@
   (first
     (remove #{player} tokens)))
 
+
+(defn- is-board-full?
+  [game-state]
+  (empty? (get-moves game-state)))
+
 (defn- is-game-finished?
-  [board]
-  (or (win_checker/did-either-player-win? board)
-      (board/is-board-full? board)))
+  [game-state]
+  (let [board (get-board game-state)]
+    (or (win_checker/did-either-player-win? board)
+        (is-board-full? game-state))))
 
 (defn add-move
   [game-state move]
@@ -87,12 +107,17 @@
         player (get-player game-state)
         updated-board (board/add-move board move player)
         next-player (switch-player player)
-        game-is-finished (is-game-finished? updated-board)
-        winner (win_checker/which-player-won? updated-board)
-        move-strategies (get-move-strategies game-state)]
+        valid-moves (get-valid-moves game-state)
+        move-strategies (get-move-strategies game-state)
+        intermediate-game-state (create-game-state
+                                  updated-board next-player false false
+                                  valid-moves move-strategies)
+        game-is-finished (is-game-finished? intermediate-game-state)
+        winner (win_checker/which-player-won? updated-board)]
     { :board updated-board
       :player next-player
       :finished? game-is-finished
       :winner winner
+      :moves valid-moves
       :move-strategies move-strategies }))
 

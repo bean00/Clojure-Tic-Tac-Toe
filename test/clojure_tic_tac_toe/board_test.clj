@@ -12,44 +12,6 @@
            (token-at {:X #{:1}, :O #{}} :1))
         "it returns the token key for X")))
 
-(deftest get-available-moves-test
-  (testing "when no move has been made"
-    (is (= valid-moves
-           (get-available-moves empty-board))
-        "it will return all the moves"))
-  (testing "when a move has been made"
-    (is (= #{:2 :3 :4 :5 :6 :7 :8 :9}
-           (get-available-moves {:X #{:1}, :O #{}}))
-        "it should not be in the set of available moves"))
-  (testing "when each player has made 1 move"
-    (is (= #{:3 :4 :5 :6 :7 :8 :9}
-           (get-available-moves {:X #{:1}, :O #{:2}}))
-        "it should return all moves except for those 2"))
-  (testing "when the board is full"
-    (is (= #{}
-           (get-available-moves {:X #{:1 :2 :3 :4 :5}, :O #{:6 :7 :8 :9}}))
-        "it returns an empty set")))
-
-(deftest is-move-invalid?-test
-  (testing "when an invalid move is passed in"
-    (is (= true
-           (is-move-invalid? :e))
-        "it returns true"))
-  (testing "when a valid move is passed in"
-    (is (= false
-           (is-move-invalid? :3))
-        "it returns false")))
-
-(deftest has-move-been-taken?-test
-  (testing "when a move has already been taken"
-    (is (= true
-           (has-move-been-taken? {:X #{:4}, :O #{}} :4))
-        "it returns true"))
-  (testing "when a move has not been taken"
-    (is (= false
-           (has-move-been-taken? {:X #{:3}, :O #{:5}} :9))
-        "it returns false")))
-
 (deftest add-move-test
   (testing "when adding the first move"
     (is (= {:X #{:3}, :O #{}}
@@ -63,14 +25,4 @@
     (is (= {:X #{:3 :6}, :O #{:5}}
            (add-move {:X #{:3}, :O #{:5}} :6 :X))
         "it adds X's next move to the board")))
-
-(deftest is-board-full?-test
-  (testing "when the board is full"
-    (is (= true
-           (is-board-full? {:X #{:1 :2 :3 :4 :5}, :O #{:6 :7 :8 :9}}))
-        "it returns true"))
-  (testing "when the board isn't full"
-    (is (= false
-           (is-board-full? empty-board))
-        "it returns false")))
 
