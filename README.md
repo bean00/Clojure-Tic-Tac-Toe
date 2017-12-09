@@ -1,18 +1,14 @@
-# Tic Tac Toe in Clojure
+# Tic Tac Toe API in Clojure
 
-A program to play Tic Tac Toe, with an option to play against a computer. This project includes the core code to support a Tic Tac Toe game. However, it is also a stand-alone project (defaults to a 3x3 sized board).
+An API to play Tic Tac Toe. This project includes the core code to support a Tic Tac Toe game, although it cannot be ran on its own. To actually run the program, use the project at https://github.com/bean00/custom-clojure-ttt.
 
 ## Instructions
 1. Clone or download this repository onto your local machine
-2. Use the console to run the program
+2. Use the console to run the tests
     - Make sure you have Leiningen installed (https://leiningen.org/)
-    - Run `lein run`
-3. Follow the program's instructions
-    - Single Player Mode: you vs. a computer
-    - Multi Player Mode: you vs. another person
+    - Run `lein test`
 
-## Testing
-- Run `lein test` to run all the tests once
+## More on Testing
 - Run `lein test-refresh` to keep the tests running, and refresh the output anytime the code changes (need plugin below)
 
 ## Plugins to Support Development
