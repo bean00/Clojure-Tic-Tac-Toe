@@ -91,6 +91,11 @@
     (remove #{player} tokens)))
 
 
+(defn- update-board
+  [game-state board]
+  (assoc game-state :board board))
+
+
 (defn- is-board-full?
   [game-state]
   (empty? (get-moves game-state)))
@@ -109,10 +114,8 @@
         next-player (switch-player player)
         valid-moves (get-valid-moves game-state)
         move-strategies (get-move-strategies game-state)
-        intermediate-game-state (create-game-state
-                                  updated-board next-player false false
-                                  valid-moves move-strategies)
-        game-is-finished (is-game-finished? intermediate-game-state)
+        updated-game-state (update-board game-state updated-board)
+        game-is-finished (is-game-finished? updated-game-state)
         winner (win_checker/which-player-won? updated-board)]
     { :board updated-board
       :player next-player
