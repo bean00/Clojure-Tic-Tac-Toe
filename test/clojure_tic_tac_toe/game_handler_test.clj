@@ -9,6 +9,9 @@
 (def valid-moves-as-list
   '(:1 :2 :3 :4 :5 :6 :7 :8 :9))
 
+(def winning-moves
+  '(#{:1 :2 :3}))
+
 (def h-vs-h-strategies
   {:X :1, :O :2})
 
@@ -21,10 +24,11 @@
 (deftest create-game-state-test
   (testing "when creating a game state with move strategies for H vs. H (3x3)"
     (is (= {:board board/empty-board, :player :X,
-            :finished? false, :winner false, :move-strategies h-vs-h-strategies
-            :moves valid-moves}
+            :finished? false, :winner false, :moves valid-moves,
+            :winning-moves winning-moves, :move-strategies h-vs-h-strategies}
            (create-game-state
-             board/empty-board :X false false valid-moves h-vs-h-strategies))
+             board/empty-board :X false false valid-moves winning-moves
+             h-vs-h-strategies))
         "it returns the correct game state")))
 
 (deftest get-player-test
@@ -37,7 +41,8 @@
   (testing "when checking if an incomplete game is finished"
     (is (= false
            (finished? (create-game-state
-                        board/empty-board :X false false valid-moves :1)))
+                        board/empty-board :X false false valid-moves
+                        winning-moves :1)))
         "it returns false")))
 
 (deftest get-winner-test

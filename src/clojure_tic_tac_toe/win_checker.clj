@@ -3,6 +3,8 @@
             [clojure-tic-tac-toe.tic_tac_toe_rules :as rules]
             [clojure-tic-tac-toe.utilities :refer [contains-set?]]))
 
+; TODO: refactor functions to take in game-state, the extract board and winning-moves from game-state
+
 (defn did-player-win?
   [board player]
   (let [player-moves (player board)]
