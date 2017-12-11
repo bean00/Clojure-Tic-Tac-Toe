@@ -20,7 +20,7 @@
 (def x-won-game-state
   {:board {:X #{:1 :5 :9}, :O #{:2 :3}},
    :player :O, :finished? true, :winner :X,
-   :moves valid-moves,
+   :moves valid-moves, :winning-moves winning-moves,
    :move-strategies h-vs-h-strategies})
 
 (deftest create-game-state-test
@@ -139,12 +139,12 @@
   (testing "when a player wins"
     (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
             :player :O, :finished? true, :winner :X,
-            :moves valid-moves, :winning-moves winning-moves
+            :moves valid-moves, :winning-moves winning-moves,
             :move-strategies h-vs-h-strategies}
            (add-move
              {:board {:X #{:1 :2}, :O #{:4 :5}},
               :player :X, :finished? false, :winner false,
-              :moves valid-moves, :winning-moves winning-moves
+              :moves valid-moves, :winning-moves winning-moves,
               :move-strategies h-vs-h-strategies}
              :3))
         "it returns the properly updated game state")))
