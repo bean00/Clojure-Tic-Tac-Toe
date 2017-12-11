@@ -82,8 +82,9 @@
 
 (defn calculate-score
   [game-state]
-  (let [board (get-board game-state)]
-    (win_checker/calculate-score board))) ; TODO: pass in game-state
+  (let [board (get-board game-state)
+        winning-moves (:winning-moves game-state)]
+    (win_checker/calculate-score board winning-moves)))
 
 
 (defn switch-player
@@ -103,8 +104,9 @@
 
 (defn- is-game-finished?
   [game-state]
-  (let [board (get-board game-state)]
-    (or (win_checker/did-either-player-win? board) ; TODO: pass in game-state
+  (let [board (get-board game-state)
+        winning-moves (:winning-moves game-state)]
+    (or (win_checker/did-either-player-win? board winning-moves) ; TODO: pass in game-state
         (is-board-full? game-state))))
 
 (defn add-move
@@ -114,15 +116,16 @@
         updated-board (board/add-move board move player)
         next-player (switch-player player)
         valid-moves (get-valid-moves game-state)
+        winning-moves (:winning-moves game-state)
         move-strategies (get-move-strategies game-state)
         updated-game-state (update-board game-state updated-board)
         game-is-finished (is-game-finished? updated-game-state)
-        winner (win_checker/which-player-won? updated-board)] ; TODO: pass in updated-game-state
+        winner (win_checker/which-player-won? updated-board winning-moves)] ; TODO: pass in updated-game-state
     { :board updated-board
       :player next-player
       :finished? game-is-finished
       :winner winner
       :moves valid-moves
-      ; :winning-moves winning-moves TODO
+      :winning-moves winning-moves
       :move-strategies move-strategies }))
 

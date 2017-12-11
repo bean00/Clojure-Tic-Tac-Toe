@@ -10,7 +10,9 @@
   '(:1 :2 :3 :4 :5 :6 :7 :8 :9))
 
 (def winning-moves
-  '(#{:1 :2 :3}))
+  '(#{:1 :2 :3} #{:4 :5 :6} #{:7 :8 :9}
+    #{:1 :4 :7} #{:2 :5 :8} #{:3 :6 :9}
+    #{:1 :5 :9} #{:3 :5 :7}))
 
 (def h-vs-h-strategies
   {:X :1, :O :2})
@@ -123,7 +125,8 @@
 (deftest calculate-score-test
   (testing "when Player X won"
     (is (= 1
-           (calculate-score {:board {:X #{:1 :2 :3} :O #{}}}))
+           (calculate-score {:board {:X #{:1 :2 :3} :O #{}},
+                             :winning-moves winning-moves}))
         "it returns the score for X winning")))
 
 (deftest switch-player-test
@@ -136,12 +139,12 @@
   (testing "when a player wins"
     (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
             :player :O, :finished? true, :winner :X,
-            :moves valid-moves
+            :moves valid-moves, :winning-moves winning-moves
             :move-strategies h-vs-h-strategies}
            (add-move
              {:board {:X #{:1 :2}, :O #{:4 :5}},
               :player :X, :finished? false, :winner false,
-              :moves valid-moves
+              :moves valid-moves, :winning-moves winning-moves
               :move-strategies h-vs-h-strategies}
              :3))
         "it returns the properly updated game state")))
