@@ -1,12 +1,11 @@
 (ns clojure-tic-tac-toe.win_checker_test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.board :as board]
+            [clojure-tic-tac-toe.default_winning_moves :as default_winning_moves]
             [clojure-tic-tac-toe.win_checker :refer :all]))
 
 (def winning-moves
-  '(#{:1 :2 :3} #{:4 :5 :6} #{:7 :8 :9}
-    #{:1 :4 :7} #{:2 :5 :8} #{:3 :6 :9}
-    #{:1 :5 :9} #{:3 :5 :7}))
+  default_winning_moves/winning-moves)
 
 (deftest did-player-win?-test
   (testing "when the player won by completing the top row"

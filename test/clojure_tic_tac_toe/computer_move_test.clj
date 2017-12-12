@@ -1,14 +1,13 @@
 (ns clojure-tic-tac-toe.computer_move_test
   (:require [clojure.test :refer [deftest testing is]]
-            [clojure-tic-tac-toe.computer_move :refer :all]))
+            [clojure-tic-tac-toe.computer_move :refer :all]
+            [clojure-tic-tac-toe.default_winning_moves :as default_winning_moves]))
 
 (def valid-moves
   #{:1 :2 :3 :4 :5 :6 :7 :8 :9})
 
 (def winning-moves
-  '(#{:1 :2 :3} #{:4 :5 :6} #{:7 :8 :9}
-    #{:1 :4 :7} #{:2 :5 :8} #{:3 :6 :9}
-    #{:1 :5 :9} #{:3 :5 :7}))
+  default_winning_moves/winning-moves)
 
 (deftest make-random-move-test
   (testing "when the computer has 1 move left"
