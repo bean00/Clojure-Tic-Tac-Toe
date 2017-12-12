@@ -17,11 +17,10 @@
 (def h-vs-h-strategies
   {:X :1, :O :2})
 
-; remove :winning-moves
+; remove :move-strategies
 (def x-won-game-state
   {:board {:X #{:1 :5 :9}, :O #{:2 :3}},
    :player :O, :finished? true,
-   :winning-moves winning-moves,
    :move-strategies h-vs-h-strategies})
 
 (defn create-view-dummy []
@@ -29,16 +28,15 @@
 
 (def initial-data
   {:moves valid-moves,
+   :winning-moves winning-moves,
    :create-view create-view-dummy})
 
-; remove :winning-moves
+; remove :move-strategies
 (deftest create-game-state-test
   (testing "when creating a game state with move strategies for H vs. H (3x3)"
-    (is (= {:board board/empty-board, :player :X,
-            :finished? false,
-            :winning-moves winning-moves, :move-strategies h-vs-h-strategies}
-           (create-game-state
-             board/empty-board :X false winning-moves
+    (is (= {:board board/empty-board, :player :X, :finished? false,
+            :move-strategies h-vs-h-strategies}
+           (create-game-state board/empty-board :X false
              h-vs-h-strategies))
         "it returns the correct game state")))
 
@@ -52,8 +50,7 @@
   (testing "when checking if an incomplete game is finished"
     (is (= false
            (finished? (create-game-state
-                        board/empty-board :X false
-                        winning-moves :1)))
+                        board/empty-board :X false :1)))
         "it returns false")))
 
 (deftest get-move-strategies-test
@@ -72,8 +69,9 @@
 
 (deftest create-initial-data-test
   (testing "when creating the initial data needed for the game"
-    (is (= {:moves valid-moves, :create-view create-view-dummy}
-           (create-initial-data valid-moves create-view-dummy))
+    (is (= {:moves valid-moves, :winning-moves winning-moves,
+            :create-view create-view-dummy}
+           (create-initial-data valid-moves winning-moves create-view-dummy))
         "it returns the correct data")))
 
 (deftest get-valid-moves-test
@@ -138,26 +136,24 @@
 (deftest calculate-score-test
   (testing "when Player X won"
     (is (= 1
-           (calculate-score {:board {:X #{:1 :2 :3} :O #{}},
-                             :winning-moves winning-moves}))
+           (calculate-score {:board {:X #{:1 :2 :3} :O #{}}}
+                            initial-data))
         "it returns the score for X winning")))
 
 (deftest get-winner-test
   (testing "when getting the winner from a winning game state"
     (is (= :X
-           (get-winner x-won-game-state))
+           (get-winner x-won-game-state initial-data))
         "it returns the winner")))
 
 (deftest add-move-test
   (testing "when a player wins"
     (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
             :player :O, :finished? true,
-            :winning-moves winning-moves,
             :move-strategies h-vs-h-strategies}
            (add-move
              {:board {:X #{:1 :2}, :O #{:4 :5}},
               :player :X, :finished? false,
-              :winning-moves winning-moves,
               :move-strategies h-vs-h-strategies}
              initial-data
              :3))

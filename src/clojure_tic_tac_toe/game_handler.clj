@@ -8,13 +8,12 @@
 
 (def tokens (keys empty-board))
 
-; remove :winning-moves
+; remove :move-strategies
 (defn create-game-state
-  [board player finished? winning-moves move-strategies]
+  [board player finished? move-strategies]
   { :board board,
     :player player,
     :finished? finished?,
-    :winning-moves winning-moves
     :move-strategies move-strategies })
 
 (defn- get-board
@@ -29,10 +28,6 @@
   [game-state]
   (:finished? game-state))
 
-(defn- get-winning-moves
-  [game-state]
-  (:winning-moves game-state))
-
 (defn get-move-strategies
   [game-state]
   (:move-strategies game-state))
@@ -44,13 +39,18 @@
 
 
 (defn create-initial-data
-  [valid-moves create-view]
+  [valid-moves winning-moves create-view]
   { :moves valid-moves
+    :winning-moves winning-moves
     :create-view create-view })
 
 (defn get-valid-moves
   [initial-data]
   (:moves initial-data))
+
+(defn- get-winning-moves
+  [game-state]
+  (:winning-moves game-state))
 
 (defn get-create-view
   [initial-data]
@@ -89,16 +89,16 @@
 
 
 (defn calculate-score
-  [game-state]
+  [game-state initial-data]
   (let [board (get-board game-state)
-        winning-moves (get-winning-moves game-state)]
+        winning-moves (get-winning-moves initial-data)]
     (win_checker/calculate-score board winning-moves)))
 
 
 (defn get-winner
-  [game-state]
+  [game-state initial-data]
   (let [board (get-board game-state)
-        winning-moves (get-winning-moves game-state)
+        winning-moves (get-winning-moves initial-data)
         winner (win_checker/which-player-won? board winning-moves)]
     winner))
 
@@ -119,7 +119,7 @@
 (defn- is-game-finished?
   [game-state initial-data]
   (let [board (get-board game-state)
-        winning-moves (get-winning-moves game-state)]
+        winning-moves (get-winning-moves initial-data)]
     (or (win_checker/did-either-player-win? board winning-moves)
         (is-board-full? game-state initial-data))))
 
@@ -129,13 +129,11 @@
         player (get-player game-state)
         updated-board (board/add-move board move player)
         next-player (switch-player player)
-        winning-moves (get-winning-moves game-state)
         move-strategies (get-move-strategies game-state)
         updated-game-state (update-board game-state updated-board)
         game-is-finished (is-game-finished? updated-game-state initial-data)]
     { :board updated-board
       :player next-player
       :finished? game-is-finished
-      :winning-moves winning-moves
       :move-strategies move-strategies }))
 
