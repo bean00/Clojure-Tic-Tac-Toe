@@ -18,17 +18,6 @@
     :winning-moves winning-moves
     :move-strategies move-strategies })
 
-
-(defn create-initial-data
-  [create-view]
-  { :create-view create-view })
-
-
-(defn get-create-view
-  [initial-data]
-  (:create-view initial-data))
-
-
 (defn- get-board
   [game-state]
   (:board game-state))
@@ -61,6 +50,15 @@
   [game-state]
   (let [player (get-player game-state)]
     (player (:move-strategies game-state))))
+
+
+(defn create-initial-data
+  [create-view]
+  { :create-view create-view })
+
+(defn get-create-view
+  [initial-data]
+  (:create-view initial-data))
 
 
 (defn token-at

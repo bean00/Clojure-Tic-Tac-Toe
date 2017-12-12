@@ -39,18 +39,6 @@
              h-vs-h-strategies))
         "it returns the correct game state")))
 
-(deftest create-initial-data-test
-  (testing "when creating the initial data needed for the game"
-    (is (= {:create-view create-view-dummy}
-           (create-initial-data create-view-dummy))
-        "it returns the correct data")))
-
-(deftest get-create-view-test
-  (testing "when getting the create view function from the initial data"
-    (is (= create-view-dummy
-           (get-create-view initial-data))
-        "it returns the function")))
-
 (deftest get-player-test
   (testing "when getting the player from a winning game state"
     (is (= :O
@@ -90,6 +78,18 @@
                                :player :X, :finished? false, :winner false,
                                :move-strategies h-vs-h-strategies}))
         "it returns the move strategy")))
+
+(deftest create-initial-data-test
+  (testing "when creating the initial data needed for the game"
+    (is (= {:create-view create-view-dummy}
+           (create-initial-data create-view-dummy))
+        "it returns the correct data")))
+
+(deftest get-create-view-test
+  (testing "when getting the create view function from the initial data"
+    (is (= create-view-dummy
+           (get-create-view initial-data))
+        "it returns the function")))
 
 (deftest token-at-test
   (testing "when X has moved to position 2"
