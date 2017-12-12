@@ -8,13 +8,11 @@
 
 (def tokens (keys empty-board))
 
-; remove :move-strategies
 (defn create-game-state
-  [board player finished? move-strategies]
-  { :board board,
-    :player player,
-    :finished? finished?,
-    :move-strategies move-strategies })
+  [board player finished?]
+  { :board board
+    :player player
+    :finished? finished? })
 
 (defn- get-board
   [game-state]
@@ -28,20 +26,12 @@
   [game-state]
   (:finished? game-state))
 
-(defn get-move-strategies
-  [game-state]
-  (:move-strategies game-state))
-
-(defn get-move-strategy
-  [game-state]
-  (let [player (get-player game-state)]
-    (player (:move-strategies game-state))))
-
 
 (defn create-initial-data
-  [valid-moves winning-moves create-view]
+  [valid-moves winning-moves move-strategies create-view]
   { :moves valid-moves
     :winning-moves winning-moves
+    :move-strategies move-strategies
     :create-view create-view })
 
 (defn get-valid-moves
@@ -49,8 +39,17 @@
   (:moves initial-data))
 
 (defn- get-winning-moves
-  [game-state]
-  (:winning-moves game-state))
+  [initial-data]
+  (:winning-moves initial-data))
+
+(defn get-move-strategies
+  [initial-data]
+  (:move-strategies initial-data))
+
+(defn get-move-strategy
+  [game-state initial-data]
+  (let [player (get-player game-state)]
+    (player (get-move-strategies initial-data))))
 
 (defn get-create-view
   [initial-data]
@@ -129,11 +128,9 @@
         player (get-player game-state)
         updated-board (board/add-move board move player)
         next-player (switch-player player)
-        move-strategies (get-move-strategies game-state)
         updated-game-state (update-board game-state updated-board)
         game-is-finished (is-game-finished? updated-game-state initial-data)]
     { :board updated-board
       :player next-player
-      :finished? game-is-finished
-      :move-strategies move-strategies }))
+      :finished? game-is-finished }))
 
