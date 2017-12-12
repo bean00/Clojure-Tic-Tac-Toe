@@ -3,8 +3,8 @@
             [clojure-tic-tac-toe.win_checker :as win_checker]))
 
 (defn- create-new-game-states
-  [game-state moves]
-  (map #(game_handler/add-move game-state %) moves))
+  [game-state initial-data moves]
+  (map #(game_handler/add-move game-state initial-data %) moves))
 
 (defn- get-scores
   [scores-and-moves]
@@ -43,13 +43,13 @@
    moves scores))
 
 (defn minimax-move-and-score
-  [game-state]
+  [game-state initial-data]
   (if (game_handler/finished? game-state)
     (let [score (game_handler/calculate-score game-state)]
       {:move :invalid-move, :score score})
-    (let [moves (game_handler/get-available-moves game-state)
-          new-game-states (create-new-game-states game-state moves)
-          moves-and-scores (map #(minimax-move-and-score %)
+    (let [moves (game_handler/get-available-moves game-state initial-data)
+          new-game-states (create-new-game-states game-state initial-data moves)
+          moves-and-scores (map #(minimax-move-and-score % initial-data)
                                 new-game-states)
           scores (get-scores moves-and-scores)
           score (get-score-based-on-player scores game-state)
@@ -57,6 +57,6 @@
       {:move move, :score score})))
 
 (defn minimax-move
-  [game-state]
-  (:move (minimax-move-and-score game-state)))
+  [game-state initial-data]
+  (:move (minimax-move-and-score game-state initial-data)))
 

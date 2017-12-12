@@ -17,25 +17,28 @@
 (def h-vs-h-strategies
   {:X :1, :O :2})
 
+; remove :winning-moves
 (def x-won-game-state
   {:board {:X #{:1 :5 :9}, :O #{:2 :3}},
    :player :O, :finished? true,
-   :moves valid-moves, :winning-moves winning-moves,
+   :winning-moves winning-moves,
    :move-strategies h-vs-h-strategies})
 
 (defn create-view-dummy []
   "")
 
 (def initial-data
-  {:create-view create-view-dummy})
+  {:moves valid-moves,
+   :create-view create-view-dummy})
 
+; remove :winning-moves
 (deftest create-game-state-test
   (testing "when creating a game state with move strategies for H vs. H (3x3)"
     (is (= {:board board/empty-board, :player :X,
-            :finished? false, :moves valid-moves,
+            :finished? false,
             :winning-moves winning-moves, :move-strategies h-vs-h-strategies}
            (create-game-state
-             board/empty-board :X false valid-moves winning-moves
+             board/empty-board :X false winning-moves
              h-vs-h-strategies))
         "it returns the correct game state")))
 
@@ -49,15 +52,9 @@
   (testing "when checking if an incomplete game is finished"
     (is (= false
            (finished? (create-game-state
-                        board/empty-board :X false valid-moves
+                        board/empty-board :X false
                         winning-moves :1)))
         "it returns false")))
-
-(deftest get-valid-moves-test
-  (testing "when getting the valid moves from a winning game state"
-    (is (= valid-moves
-           (get-valid-moves x-won-game-state))
-        "it returns the valid moves")))
 
 (deftest get-move-strategies-test
   (testing "when getting the move strategies a winning game state"
@@ -75,9 +72,15 @@
 
 (deftest create-initial-data-test
   (testing "when creating the initial data needed for the game"
-    (is (= {:create-view create-view-dummy}
-           (create-initial-data create-view-dummy))
+    (is (= {:moves valid-moves, :create-view create-view-dummy}
+           (create-initial-data valid-moves create-view-dummy))
         "it returns the correct data")))
+
+(deftest get-valid-moves-test
+  (testing "when getting the valid moves from the initial data"
+    (is (= valid-moves
+           (get-valid-moves initial-data))
+        "it returns the valid moves")))
 
 (deftest get-create-view-test
   (testing "when getting the create view function from the initial data"
@@ -95,42 +98,40 @@
   (testing "when no move has been made"
     (is (= valid-moves-as-sorted-list
            (sort
-             (get-available-moves {:board empty-board, :moves valid-moves})))
+             (get-available-moves {:board empty-board} initial-data)))
         "it returns all the moves"))
   (testing "when moves have been made"
     (is (= '(:1 :2 :3 :4)
            (sort
-             (get-available-moves {:board {:X #{:5 :7 :8}, :O #{:6 :9}},
-                                   :moves valid-moves})))
+             (get-available-moves {:board {:X #{:5 :7 :8}, :O #{:6 :9}}}
+                                  initial-data)))
         "it returns a list of available moves"))
   (testing "when the board is full"
     (is (= nil
            (get-available-moves {:board {:X #{:1 :2 :3 :4 :5},
-                                         :O #{:6 :7 :8 :9}},
-                                 :moves valid-moves}))
+                                         :O #{:6 :7 :8 :9}}}
+                                 initial-data))
         "it returns nil")))
 
 (deftest is-move-invalid?-test
   (testing "when an invalid move is passed in"
     (is (= true
-           (is-move-invalid? x-won-game-state :e))
+           (is-move-invalid? initial-data :e))
         "it returns true"))
   (testing "when a valid move is passed in"
     (is (= false
-           (is-move-invalid? x-won-game-state :3))
+           (is-move-invalid? initial-data :3))
         "it returns false")))
 
 (deftest has-move-been-taken?-test
   (testing "when a move has been taken"
     (is (= true
-           (has-move-been-taken? {:board {:X #{:4}, :O #{}},
-                                  :moves valid-moves}
+           (has-move-been-taken? {:board {:X #{:4}, :O #{}}} initial-data
                                  :4))
         "it returns true"))
   (testing "when a move has not been taken"
     (is (= false
-           (has-move-been-taken? {:board {:X #{:3}, :O #{:5}},
-                                  :moves valid-moves}
+           (has-move-been-taken? {:board {:X #{:3}, :O #{:5}}} initial-data
                                  :9))
         "it returns false")))
 
@@ -150,14 +151,15 @@
 (deftest add-move-test
   (testing "when a player wins"
     (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
-            :player :O, :finished? true,:moves valid-moves,
+            :player :O, :finished? true,
             :winning-moves winning-moves,
             :move-strategies h-vs-h-strategies}
            (add-move
              {:board {:X #{:1 :2}, :O #{:4 :5}},
-              :player :X, :finished? false, :moves valid-moves,
+              :player :X, :finished? false,
               :winning-moves winning-moves,
               :move-strategies h-vs-h-strategies}
+             initial-data
              :3))
         "it returns the properly updated game state")))
 
