@@ -9,11 +9,10 @@
 (def tokens (keys empty-board))
 
 (defn create-game-state
-  [board player finished? winner valid-moves winning-moves move-strategies]
+  [board player finished? valid-moves winning-moves move-strategies]
   { :board board,
     :player player,
     :finished? finished?,
-    :winner winner,
     :moves valid-moves,
     :winning-moves winning-moves
     :move-strategies move-strategies })
@@ -29,10 +28,6 @@
 (defn finished?
   [game-state]
   (:finished? game-state))
-
-(defn get-winner
-  [game-state]
-  (:winner game-state))
 
 (defn get-valid-moves
   [game-state]
@@ -99,16 +94,22 @@
     (win_checker/calculate-score board winning-moves)))
 
 
-(defn switch-player
+(defn get-winner
+  [game-state]
+  (let [board (get-board game-state)
+        winning-moves (get-winning-moves game-state)
+        winner (win_checker/which-player-won? board winning-moves)]
+    winner))
+
+
+(defn- switch-player
   [player]
   (first
     (remove #{player} tokens)))
 
-
 (defn- update-board
   [game-state board]
   (assoc game-state :board board))
-
 
 (defn- is-board-full?
   [game-state]
@@ -131,12 +132,10 @@
         winning-moves (get-winning-moves game-state)
         move-strategies (get-move-strategies game-state)
         updated-game-state (update-board game-state updated-board)
-        game-is-finished (is-game-finished? updated-game-state)
-        winner (win_checker/which-player-won? updated-board winning-moves)]
+        game-is-finished (is-game-finished? updated-game-state)]
     { :board updated-board
       :player next-player
       :finished? game-is-finished
-      :winner winner
       :moves valid-moves
       :winning-moves winning-moves
       :move-strategies move-strategies }))

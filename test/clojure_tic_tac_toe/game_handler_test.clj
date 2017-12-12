@@ -19,7 +19,7 @@
 
 (def x-won-game-state
   {:board {:X #{:1 :5 :9}, :O #{:2 :3}},
-   :player :O, :finished? true, :winner :X,
+   :player :O, :finished? true,
    :moves valid-moves, :winning-moves winning-moves,
    :move-strategies h-vs-h-strategies})
 
@@ -32,10 +32,10 @@
 (deftest create-game-state-test
   (testing "when creating a game state with move strategies for H vs. H (3x3)"
     (is (= {:board board/empty-board, :player :X,
-            :finished? false, :winner false, :moves valid-moves,
+            :finished? false, :moves valid-moves,
             :winning-moves winning-moves, :move-strategies h-vs-h-strategies}
            (create-game-state
-             board/empty-board :X false false valid-moves winning-moves
+             board/empty-board :X false valid-moves winning-moves
              h-vs-h-strategies))
         "it returns the correct game state")))
 
@@ -49,15 +49,9 @@
   (testing "when checking if an incomplete game is finished"
     (is (= false
            (finished? (create-game-state
-                        board/empty-board :X false false valid-moves
+                        board/empty-board :X false valid-moves
                         winning-moves :1)))
         "it returns false")))
-
-(deftest get-winner-test
-  (testing "when getting the winner from a winning game state"
-    (is (= :X
-           (get-winner x-won-game-state))
-        "it returns the winner")))
 
 (deftest get-valid-moves-test
   (testing "when getting the valid moves from a winning game state"
@@ -75,7 +69,7 @@
   (testing "when getting a move strategy from the game state"
     (is (= :1
            (get-move-strategy {:board board/empty-board,
-                               :player :X, :finished? false, :winner false,
+                               :player :X, :finished? false,
                                :move-strategies h-vs-h-strategies}))
         "it returns the move strategy")))
 
@@ -147,22 +141,22 @@
                              :winning-moves winning-moves}))
         "it returns the score for X winning")))
 
-(deftest switch-player-test
-  (testing "when starting with one player"
-    (is (= :O
-           (switch-player :X))
-        "it returns the other player")))
+(deftest get-winner-test
+  (testing "when getting the winner from a winning game state"
+    (is (= :X
+           (get-winner x-won-game-state))
+        "it returns the winner")))
 
 (deftest add-move-test
   (testing "when a player wins"
     (is (= {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
-            :player :O, :finished? true, :winner :X,
-            :moves valid-moves, :winning-moves winning-moves,
+            :player :O, :finished? true,:moves valid-moves,
+            :winning-moves winning-moves,
             :move-strategies h-vs-h-strategies}
            (add-move
              {:board {:X #{:1 :2}, :O #{:4 :5}},
-              :player :X, :finished? false, :winner false,
-              :moves valid-moves, :winning-moves winning-moves,
+              :player :X, :finished? false, :moves valid-moves,
+              :winning-moves winning-moves,
               :move-strategies h-vs-h-strategies}
              :3))
         "it returns the properly updated game state")))
