@@ -19,6 +19,16 @@
     :move-strategies move-strategies })
 
 
+(defn create-initial-data
+  [create-view]
+  { :create-view create-view })
+
+
+(defn get-create-view
+  [initial-data]
+  (:create-view initial-data))
+
+
 (defn- get-board
   [game-state]
   (:board game-state))

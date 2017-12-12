@@ -23,6 +23,12 @@
    :moves valid-moves, :winning-moves winning-moves,
    :move-strategies h-vs-h-strategies})
 
+(defn create-view-dummy []
+  "")
+
+(def initial-data
+  {:create-view create-view-dummy})
+
 (deftest create-game-state-test
   (testing "when creating a game state with move strategies for H vs. H (3x3)"
     (is (= {:board board/empty-board, :player :X,
@@ -32,6 +38,18 @@
              board/empty-board :X false false valid-moves winning-moves
              h-vs-h-strategies))
         "it returns the correct game state")))
+
+(deftest create-initial-data-test
+  (testing "when creating the initial data needed for the game"
+    (is (= {:create-view create-view-dummy}
+           (create-initial-data create-view-dummy))
+        "it returns the correct data")))
+
+(deftest get-create-view-test
+  (testing "when getting the create view function from the initial data"
+    (is (= create-view-dummy
+           (get-create-view initial-data))
+        "it returns the function")))
 
 (deftest get-player-test
   (testing "when getting the player from a winning game state"
