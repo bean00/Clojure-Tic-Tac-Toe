@@ -1,10 +1,11 @@
 (ns clojure-tic-tac-toe.minimax_test
   (:require [clojure.test :refer [deftest testing is]]
+            [clojure-tic-tac-toe.default_valid_moves :as default_valid_moves]
             [clojure-tic-tac-toe.default_winning_moves :as default_winning_moves]
             [clojure-tic-tac-toe.minimax :refer :all]))
 
 (def valid-moves
-  #{:1 :2 :3 :4 :5 :6 :7 :8 :9})
+  default_valid_moves/valid-moves)
 
 (def winning-moves
   default_winning_moves/winning-moves)
