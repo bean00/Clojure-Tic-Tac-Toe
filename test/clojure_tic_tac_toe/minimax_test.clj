@@ -1,14 +1,13 @@
 (ns clojure-tic-tac-toe.minimax_test
   (:require [clojure.test :refer [deftest testing is]]
-            [clojure-tic-tac-toe.default_valid_moves :as default_valid_moves]
-            [clojure-tic-tac-toe.default_winning_moves :as default_winning_moves]
+            [clojure-tic-tac-toe.test_helper :as test_helper]
             [clojure-tic-tac-toe.minimax :refer :all]))
 
 (def valid-moves
-  default_valid_moves/valid-moves)
+  test_helper/valid-moves)
 
 (def winning-moves
-  default_winning_moves/winning-moves)
+  test_helper/winning-moves)
 
 (def initial-data
   {:moves valid-moves

@@ -1,18 +1,17 @@
 (ns clojure-tic-tac-toe.game_handler_test
   (:require [clojure.test :refer [deftest testing is]]
             [clojure-tic-tac-toe.board :as board]
-            [clojure-tic-tac-toe.default_valid_moves :as default_valid_moves]
-            [clojure-tic-tac-toe.default_winning_moves :as default_winning_moves]
+            [clojure-tic-tac-toe.test_helper :as test_helper]
             [clojure-tic-tac-toe.game_handler :refer :all]))
 
 (def valid-moves
-  default_valid_moves/valid-moves)
+  test_helper/valid-moves)
 
 (def valid-moves-as-sorted-list
   (sort (into (list) valid-moves)))
 
 (def winning-moves
-  default_winning_moves/winning-moves)
+  test_helper/winning-moves)
 
 (def h-vs-h-strategies
   {:X :1, :O :2})

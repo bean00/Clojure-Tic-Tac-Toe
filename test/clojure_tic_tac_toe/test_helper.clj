@@ -1,4 +1,9 @@
-(ns clojure-tic-tac-toe.default_winning_moves)
+(ns clojure-tic-tac-toe.test_helper)
+
+(def valid-moves
+  #{:1 :2 :3
+    :4 :5 :6
+    :7 :8 :9})
 
 (def winning-rows
   (list #{:1 :2 :3}
