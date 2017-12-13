@@ -37,18 +37,6 @@
            (create-game-state board/empty-board :X false))
         "it returns the correct game state")))
 
-(deftest get-player-test
-  (testing "when getting the player from a winning game state"
-    (is (= :O
-           (get-player x-won-game-state))
-        "it returns the player")))
-
-(deftest finished?-test
-  (testing "when checking if a game where X won is finished"
-    (is (= true
-           (finished? x-won-game-state))
-        "it returns true")))
-
 (deftest create-initial-data-test
   (testing "when creating the initial data needed for the game"
     (is (= {:moves valid-moves, :winning-moves winning-moves,
@@ -57,18 +45,6 @@
              valid-moves winning-moves h-vs-h-strategies create-view-dummy))
         "it returns the correct data")))
 
-(deftest get-valid-moves-test
-  (testing "when getting the valid moves from the initial data"
-    (is (= valid-moves
-           (get-valid-moves initial-data))
-        "it returns the valid moves")))
-
-(deftest get-move-strategies-test
-  (testing "when getting the move strategies from the initial data"
-    (is (= h-vs-h-strategies
-           (get-move-strategies initial-data))
-        "it returns the move strategies")))
-
 (deftest get-move-strategy-test
   (testing "when getting a single move strategy"
     (is (= :1
@@ -76,12 +52,6 @@
                                :player :X, :finished? false}
                               initial-data))
         "it returns the move strategy")))
-
-(deftest get-create-view-test
-  (testing "when getting the create view function from the initial data"
-    (is (= create-view-dummy
-           (get-create-view initial-data))
-        "it returns the function")))
 
 (deftest token-at-test
   (testing "when X has moved to position 2"

@@ -19,7 +19,7 @@
 
 (defn- get-score-based-on-player
   [scores game-state]
-  (let [player (game_handler/get-player game-state)]
+  (let [player (:player game-state)]
     (apply (max-or-min-based-on-player player) scores)))
 
 
@@ -44,7 +44,7 @@
 
 (defn minimax-move-and-score
   [game-state initial-data]
-  (if (game_handler/finished? game-state)
+  (if (:finished? game-state)
     (let [score (game_handler/calculate-score game-state initial-data)]
       {:move :invalid-move, :score score})
     (let [moves (game_handler/get-available-moves game-state initial-data)

@@ -14,18 +14,6 @@
     :player player
     :finished? finished? })
 
-(defn- get-board
-  [game-state]
-  (:board game-state))
-
-(defn get-player
-  [game-state]
-  (:player game-state))
-
-(defn finished?
-  [game-state]
-  (:finished? game-state))
-
 
 (defn create-initial-data
   [valid-moves winning-moves move-strategies create-view]
@@ -34,38 +22,22 @@
     :move-strategies move-strategies
     :create-view create-view })
 
-(defn get-valid-moves
-  [initial-data]
-  (:moves initial-data))
-
-(defn- get-winning-moves
-  [initial-data]
-  (:winning-moves initial-data))
-
-(defn get-move-strategies
-  [initial-data]
-  (:move-strategies initial-data))
-
 (defn get-move-strategy
   [game-state initial-data]
-  (let [player (get-player game-state)]
-    (player (get-move-strategies initial-data))))
-
-(defn get-create-view
-  [initial-data]
-  (:create-view initial-data))
+  (let [player (:player game-state)]
+    (player (:move-strategies initial-data))))
 
 
 (defn token-at
   [game-state position]
-  (let [board (get-board game-state)]
+  (let [board (:board game-state)]
     (board/token-at board position)))
 
 
 (defn- get-moves
   [game-state initial-data]
-  (let [board (get-board game-state)
-        valid-moves (get-valid-moves initial-data)]
+  (let [board (:board game-state)
+        valid-moves (:moves initial-data)]
     (reduce set/difference valid-moves (vals board))))
 
 (defn get-available-moves
@@ -77,7 +49,7 @@
 
 (defn is-move-invalid?
   [initial-data move]
-  (let [valid-moves (get-valid-moves initial-data)]
+  (let [valid-moves (:moves initial-data)]
     (not (contains? valid-moves move))))
 
 
@@ -89,15 +61,15 @@
 
 (defn calculate-score
   [game-state initial-data]
-  (let [board (get-board game-state)
-        winning-moves (get-winning-moves initial-data)]
+  (let [board (:board game-state)
+        winning-moves (:winning-moves initial-data)]
     (win_checker/calculate-score board winning-moves)))
 
 
 (defn get-winner
   [game-state initial-data]
-  (let [board (get-board game-state)
-        winning-moves (get-winning-moves initial-data)
+  (let [board (:board game-state)
+        winning-moves (:winning-moves initial-data)
         winner (win_checker/which-player-won? board winning-moves)]
     winner))
 
@@ -117,15 +89,15 @@
 
 (defn- is-game-finished?
   [game-state initial-data]
-  (let [board (get-board game-state)
-        winning-moves (get-winning-moves initial-data)]
+  (let [board (:board game-state)
+        winning-moves (:winning-moves initial-data)]
     (or (win_checker/did-either-player-win? board winning-moves)
         (is-board-full? game-state initial-data))))
 
 (defn add-move
   [game-state initial-data move]
-  (let [board (get-board game-state)
-        player (get-player game-state)
+  (let [board (:board game-state)
+        player (:player game-state)
         updated-board (board/add-move board move player)
         next-player (switch-player player)
         updated-game-state (update-board game-state updated-board)
