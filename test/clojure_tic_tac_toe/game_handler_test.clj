@@ -25,7 +25,7 @@
   "")
 
 (def initial-data
-  {:moves valid-moves,
+  {:valid-moves valid-moves,
    :winning-moves winning-moves,
    :move-strategies h-vs-h-strategies,
    :create-view create-view-dummy})
@@ -38,7 +38,7 @@
 
 (deftest create-initial-data-test
   (testing "when creating the initial data needed for the game"
-    (is (= {:moves valid-moves, :winning-moves winning-moves,
+    (is (= {:valid-moves valid-moves, :winning-moves winning-moves,
             :move-strategies h-vs-h-strategies, :create-view create-view-dummy}
            (create-initial-data
              valid-moves winning-moves h-vs-h-strategies create-view-dummy))

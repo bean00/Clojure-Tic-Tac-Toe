@@ -10,7 +10,7 @@
   test_helper/winning-moves)
 
 (def initial-data
-  {:moves valid-moves
+  {:valid-moves valid-moves
    :winning-moves winning-moves})
 
 (deftest minimax-move-and-score-test

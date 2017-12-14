@@ -7,7 +7,7 @@
   test_helper/valid-moves)
 
 (def initial-data
-  {:moves valid-moves})
+  {:valid-moves valid-moves})
 
 (deftest make-random-move-test
   (testing "when the computer has 1 move left"

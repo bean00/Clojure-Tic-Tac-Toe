@@ -17,7 +17,7 @@
 
 (defn create-initial-data
   [valid-moves winning-moves move-strategies create-view]
-  { :moves valid-moves
+  { :valid-moves valid-moves
     :winning-moves winning-moves
     :move-strategies move-strategies
     :create-view create-view })
@@ -59,8 +59,9 @@
 
 
 (defn calculate-score
-  [{:keys [board]} winning-moves]
-  (win_checker/calculate-score board winning-moves))
+  [game-state winning-moves]
+  (let [board (:board game-state)]
+    (win_checker/calculate-score board winning-moves)))
 
 
 (defn get-winner
@@ -85,9 +86,9 @@
 
 (defn- is-game-finished?
   [{:keys [board] :as game-state}
-   {:keys [winning-moves moves]}]
+   {:keys [winning-moves valid-moves]}]
   (or (win_checker/did-either-player-win? board winning-moves)
-      (is-board-full? game-state moves)))
+      (is-board-full? game-state valid-moves)))
 
 (defn add-move
   [game-state initial-data move]
