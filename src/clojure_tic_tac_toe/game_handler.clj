@@ -22,6 +22,7 @@
     :move-strategies move-strategies
     :create-view create-view })
 
+
 (defn get-move-strategy
   [game-state initial-data]
   (let [player (:player game-state)]
@@ -35,41 +36,36 @@
 
 
 (defn- get-moves
-  [game-state initial-data]
-  (let [board (:board game-state)
-        valid-moves (:moves initial-data)]
+  [game-state valid-moves]
+  (let [board (:board game-state)]
     (reduce set/difference valid-moves (vals board))))
 
 (defn get-available-moves
-  [game-state initial-data]
-  (let [available-moves (get-moves game-state initial-data)
+  [game-state valid-moves]
+  (let [available-moves (get-moves game-state valid-moves)
         list-of-moves (set-to-list-or-nil available-moves)]
     list-of-moves))
 
 
 (defn is-move-invalid?
-  [initial-data move]
-  (let [valid-moves (:moves initial-data)]
-    (not (contains? valid-moves move))))
+  [valid-moves move]
+  (not (contains? valid-moves move)))
 
 
 (defn has-move-been-taken?
-  [game-state initial-data move]
-  (let [available-moves (get-moves game-state initial-data)]
+  [game-state valid-moves move]
+  (let [available-moves (get-moves game-state valid-moves)]
     (not (contains? available-moves move))))
 
 
 (defn calculate-score
-  [game-state initial-data]
-  (let [board (:board game-state)
-        winning-moves (:winning-moves initial-data)]
-    (win_checker/calculate-score board winning-moves)))
+  [{:keys [board]} winning-moves]
+  (win_checker/calculate-score board winning-moves))
 
 
 (defn get-winner
-  [game-state initial-data]
+  [game-state winning-moves]
   (let [board (:board game-state)
-        winning-moves (:winning-moves initial-data)
         winner (win_checker/which-player-won? board winning-moves)]
     winner))
 
@@ -84,15 +80,14 @@
   (assoc game-state :board board))
 
 (defn- is-board-full?
-  [game-state initial-data]
-  (empty? (get-moves game-state initial-data)))
+  [game-state valid-moves]
+  (empty? (get-moves game-state valid-moves)))
 
 (defn- is-game-finished?
-  [game-state initial-data]
-  (let [board (:board game-state)
-        winning-moves (:winning-moves initial-data)]
-    (or (win_checker/did-either-player-win? board winning-moves)
-        (is-board-full? game-state initial-data))))
+  [{:keys [board] :as game-state}
+   {:keys [winning-moves moves]}]
+  (or (win_checker/did-either-player-win? board winning-moves)
+      (is-board-full? game-state moves)))
 
 (defn add-move
   [game-state initial-data move]

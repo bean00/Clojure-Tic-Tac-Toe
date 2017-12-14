@@ -6,9 +6,6 @@
 (def valid-moves
   test_helper/valid-moves)
 
-(def winning-moves
-  test_helper/winning-moves)
-
 (def initial-data
   {:moves valid-moves})
 
@@ -16,18 +13,18 @@
   (testing "when the computer has 1 move left"
     (is (= :9
            (make-random-move {:board {:X #{:1 :2 :3 :4}, :O #{:5 :6 :7 :8}}}
-                             initial-data))
+                             valid-moves))
         "it returns that move"))
   (testing "when the computer has 5 moves left"
     (let [move (make-random-move {:board {:X #{:6 :7}, :O #{:8 :9}}}
-                                 initial-data)]
+                                 valid-moves)]
       (is (= true
              (contains? #{:1 :2 :3 :4 :5} move))
           "it returns one of those moves")))
   (testing "when there are no moves left"
     (is (= nil
            (make-random-move {:board {:X #{:1 :2 :3 :4 :5}, :O #{:6 :7 :8 :9}}}
-                             initial-data))
+                             valid-moves))
         "it returns nil")))
 
 (deftest make-minimax-move-test

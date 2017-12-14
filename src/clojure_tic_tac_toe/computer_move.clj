@@ -3,9 +3,9 @@
             [clojure-tic-tac-toe.minimax :as minimax]))
 
 (defn make-random-move
-  [game-state initial-data]
+  [game-state valid-moves]
   (let [available-moves (game_handler/get-available-moves
-                          game-state initial-data)]
+                          game-state valid-moves)]
     (rand-nth available-moves)))
 
 (defn make-minimax-move

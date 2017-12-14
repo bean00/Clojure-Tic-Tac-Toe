@@ -43,11 +43,12 @@
    moves scores))
 
 (defn minimax-move-and-score
-  [game-state initial-data]
+  [game-state {:keys [winning-moves] :as initial-data}]
   (if (:finished? game-state)
-    (let [score (game_handler/calculate-score game-state initial-data)]
+    (let [score (game_handler/calculate-score game-state winning-moves)]
       {:move :invalid-move, :score score})
-    (let [moves (game_handler/get-available-moves game-state initial-data)
+    (let [valid-moves (:moves initial-data)
+          moves (game_handler/get-available-moves game-state valid-moves)
           new-game-states (create-new-game-states game-state initial-data moves)
           moves-and-scores (map #(minimax-move-and-score % initial-data)
                                 new-game-states)

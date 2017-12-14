@@ -62,53 +62,53 @@
   (testing "when no move has been made"
     (is (= valid-moves-as-sorted-list
            (sort
-             (get-available-moves {:board empty-board} initial-data)))
+             (get-available-moves {:board empty-board} valid-moves)))
         "it returns all the moves"))
   (testing "when moves have been made"
     (is (= '(:1 :2 :3 :4)
            (sort
              (get-available-moves {:board {:X #{:5 :7 :8}, :O #{:6 :9}}}
-                                  initial-data)))
+                                  valid-moves)))
         "it returns a list of available moves"))
   (testing "when the board is full"
     (is (= nil
            (get-available-moves {:board {:X #{:1 :2 :3 :4 :5},
                                          :O #{:6 :7 :8 :9}}}
-                                 initial-data))
+                                 valid-moves))
         "it returns nil")))
 
 (deftest is-move-invalid?-test
   (testing "when an invalid move is passed in"
     (is (= true
-           (is-move-invalid? initial-data :e))
+           (is-move-invalid? valid-moves :e))
         "it returns true"))
   (testing "when a valid move is passed in"
     (is (= false
-           (is-move-invalid? initial-data :3))
+           (is-move-invalid? valid-moves :3))
         "it returns false")))
 
 (deftest has-move-been-taken?-test
   (testing "when a move has been taken"
     (is (= true
-           (has-move-been-taken? {:board {:X #{:4}, :O #{}}} initial-data
+           (has-move-been-taken? {:board {:X #{:4}, :O #{}}} valid-moves
                                  :4))
         "it returns true"))
   (testing "when a move has not been taken"
     (is (= false
-           (has-move-been-taken? {:board {:X #{:3}, :O #{:5}}} initial-data
+           (has-move-been-taken? {:board {:X #{:3}, :O #{:5}}} valid-moves
                                  :9))
         "it returns false")))
 
 (deftest calculate-score-test
   (testing "when Player X won"
     (is (= 1
-           (calculate-score {:board {:X #{:1 :2 :3} :O #{}}} initial-data))
+           (calculate-score {:board {:X #{:1 :2 :3} :O #{}}} winning-moves))
         "it returns the score for X winning")))
 
 (deftest get-winner-test
   (testing "when getting the winner from a winning game state"
     (is (= :X
-           (get-winner x-won-game-state initial-data))
+           (get-winner x-won-game-state winning-moves))
         "it returns the winner")))
 
 (deftest add-move-test
