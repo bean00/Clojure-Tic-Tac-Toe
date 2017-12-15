@@ -6,9 +6,10 @@
   [game-state initial-data moves]
   (map #(game_handler/add-move game-state initial-data %) moves))
 
+
 (defn- get-scores
-  [scores-and-moves]
-  (map #(:score %) scores-and-moves))
+  [score-info-list]
+  (map #(:score %) score-info-list))
 
 
 (defn- max-or-min-based-on-player
@@ -23,40 +24,51 @@
     (apply (max-or-min-based-on-player player) scores)))
 
 
-(defn- create-map-of-moves-and-scores
-  [moves scores]
-  (zipmap moves scores))
+(defn- create-score-info-list
+  [scores moves total-moves]
+  (map #(assoc {} :score %1 :move %2 :total-moves %3)
+       scores moves total-moves))
 
-(defn- get-pairs-with-target-score
-  [moves-and-scores target-score]
-  (filter #(-> % val (= target-score)) moves-and-scores))
 
-(defn- get-move-from-pairs
-  [pairs]
-  (first (first pairs)))
+(defn- get-maps-with-target-score
+  [score-info-list score]
+  (filter #(= score (:score %)) score-info-list))
 
-(defn- get-move-based-on-score
-  [moves scores target-score]
-  ((comp get-move-from-pairs
-         #(get-pairs-with-target-score % target-score)
-         create-map-of-moves-and-scores)
-   moves scores))
+(defn- sort-maps-by-total-moves
+  [maps]
+  (sort-by :total-moves (vec maps)))
 
-(defn minimax-move-and-score
-  [game-state {:keys [winning-moves valid-moves] :as initial-data}]
-  (if (:finished? game-state)
-    (let [score (game_handler/calculate-score game-state winning-moves)]
-      {:move :invalid-move, :score score})
-    (let [moves (game_handler/get-available-moves game-state valid-moves)
-          new-game-states (create-new-game-states game-state initial-data moves)
-          moves-and-scores (map #(minimax-move-and-score % initial-data)
-                                new-game-states)
-          scores (get-scores moves-and-scores)
-          score (get-score-based-on-player scores game-state)
-          move (get-move-based-on-score moves scores score)]
-      {:move move, :score score})))
+(defn- extract-move-from-first-map
+  [sorted-maps]
+  (:move (first sorted-maps)))
+
+(defn get-optimal-move
+  [score-info-list score]
+  (let [maps-with-target-score (get-maps-with-target-score score-info-list score)
+        sorted-maps (sort-maps-by-total-moves maps-with-target-score)
+        move (extract-move-from-first-map sorted-maps)]
+    move))
+
+(def minimax
+  (memoize
+    (fn [game-state {:keys [winning-moves valid-moves] :as initial-data}]
+      (if (:finished? game-state)
+        (let [score (game_handler/calculate-score game-state winning-moves)
+              total-moves (game_handler/get-total-moves game-state)]
+          {:score score, :move :invalid-move, :total-moves total-moves})
+        (let [moves (game_handler/get-available-moves game-state valid-moves)
+              new-game-states (create-new-game-states game-state initial-data moves)
+              raw-score-info-list (map #(minimax % initial-data)
+                                       new-game-states)
+              scores (get-scores raw-score-info-list)
+              totals (map #(:total-moves %) raw-score-info-list)
+              score (get-score-based-on-player scores game-state)
+              score-info-list (create-score-info-list scores moves totals)
+              move (get-optimal-move score-info-list score)
+              total-moves (first totals)]
+          {:score score, :move move, :total-moves total-moves})))))
 
 (defn minimax-move
   [game-state initial-data]
-  (:move (minimax-move-and-score game-state initial-data)))
+  (:move (minimax game-state initial-data)))
 

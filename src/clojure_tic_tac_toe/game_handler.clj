@@ -35,6 +35,12 @@
     (board/token-at board position)))
 
 
+(defn get-total-moves
+  [game-state]
+  (let [board (:board game-state)]
+    (board/get-total-moves board)))
+
+
 (defn- get-moves
   [game-state valid-moves]
   (let [board (:board game-state)]
