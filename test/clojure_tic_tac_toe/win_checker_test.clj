@@ -15,35 +15,7 @@
   (testing "when the player didn't win"
     (is (= false
            (did-player-win? board/empty-board :X winning-moves))
-        "it returns false"))
-  (testing "when the player completed the middle row"
-    (is (= true
-           (did-player-win? {:X #{:1 :2 :8}, :O #{:4 :5 :6}} :O winning-moves))
-        "it returns true"))
-  (testing "when the player completed the bottom row"
-    (is (= true
-           (did-player-win? {:X #{:7 :8 :9}, :O #{:4 :5}} :X winning-moves))
-        "it returns true"))
-  (testing "when the player completed the left column"
-    (is (= true
-           (did-player-win? {:X #{:1 :4 :7}, :O #{:2 :3}} :X winning-moves))
-        "it returns true"))
-  (testing "when the player completed the middle column"
-    (is (= true
-           (did-player-win? {:X #{:2 :5 :8}, :O #{:1 :3}} :X winning-moves))
-        "it returns true"))
-  (testing "when the player completed the right column"
-    (is (= true
-           (did-player-win? {:X #{:3 :6 :9}, :O #{:1 :2}} :X winning-moves))
-        "it returns true"))
-  (testing "when the player completed the upper left diagonal"
-    (is (= true
-           (did-player-win? {:X #{:1 :5 :9}, :O #{:2 :3}} :X winning-moves))
-        "it returns true"))
-  (testing "when the player completed the upper right diagonal"
-    (is (= true
-           (did-player-win? {:X #{:3 :5 :7}, :O #{:1 :2}} :X winning-moves))
-        "it returns true")))
+        "it returns false")))
 
 (deftest which-player-won?-test
   (testing "when the game just started"

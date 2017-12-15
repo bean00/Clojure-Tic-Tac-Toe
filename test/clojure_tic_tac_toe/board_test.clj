@@ -26,3 +26,13 @@
            (add-move {:X #{:3}, :O #{:5}} :6 :X))
         "it adds X's next move to the board")))
 
+(deftest get-total-moves-test
+  (testing "when the game has just started"
+    (is (= 0
+           (get-total-moves {:X #{}, :O #{}}))
+        "it returns 0"))
+  (testing "when 3 moves have been made"
+    (is (= 3
+           (get-total-moves {:X #{:1 :4}, :O #{:5}}))
+        "it returns 3")))
+
