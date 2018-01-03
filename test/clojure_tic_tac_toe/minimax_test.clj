@@ -52,7 +52,10 @@
           "it returns the score for X winning")
       (is (= :3
              (:move score-info))
-          "it returns the move to win")))
+          "it returns the move to win")
+      (is (= 9
+             (:total-moves score-info))
+          "it returns 8 for the total number of moves")))
   (testing "when Player O can win now (2 moves left)"
     (let [score-info (minimax
                            {:board {:X #{:1 :2 :7 :9}, :O #{:4 :5 :8}},

@@ -55,8 +55,9 @@
                                    new-game-states)
               scores (get-scores score-info-list)
               score (get-score-based-on-player scores game-state)
-              move (get-move-based-on-score moves scores score)]
-          {:score score, :move move})))))
+              move (get-move-based-on-score moves scores score)
+              total-moves (game_handler/get-total-moves (first new-game-states))]
+          {:score score, :move move, :total-moves total-moves})))))
 
 (defn minimax-move
   [game-state initial-data]
