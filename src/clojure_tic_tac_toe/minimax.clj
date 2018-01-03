@@ -46,8 +46,9 @@
   (memoize
     (fn [game-state {:keys [winning-moves valid-moves] :as initial-data}]
       (if (:finished? game-state)
-        (let [score (game_handler/calculate-score game-state winning-moves)]
-          {:score score, :move :invalid-move, :total-moves 5})
+        (let [score (game_handler/calculate-score game-state winning-moves)
+              total-moves (game_handler/get-total-moves game-state)]
+          {:score score, :move :invalid-move, :total-moves total-moves})
         (let [moves (game_handler/get-available-moves game-state valid-moves)
               new-game-states (create-new-game-states game-state initial-data moves)
               score-info-list (map #(minimax % initial-data)

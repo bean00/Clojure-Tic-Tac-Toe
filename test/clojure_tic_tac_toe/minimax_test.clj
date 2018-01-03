@@ -24,7 +24,10 @@
           "it returns the score for X winning")
       (is (= :invalid-move
              (:move score-info))
-          "it returns an invalid move")))
+          "it returns an invalid move")
+      (is (= 5
+             (:total-moves score-info))
+          "it returns the total number of moves made")))
   (testing "when Player O won"
     (is (= -1
            (:score (minimax
@@ -74,14 +77,7 @@
                     {:board {:X #{:1 :7}, :O #{:5}},
                      :player :O, :finished? false}
                     initial-data)))
-        "it returns the move to eventually draw"))
-  (testing "when the game is finished"
-    (is (= 5
-           (:total-moves (minimax
-                           {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
-                            :player :O, :finished? true}
-                           initial-data)))
-        "it returns the total number of moves made")))
+        "it returns the move to eventually draw")))
   ;(testing "when Player O can win now (3 moves left)"
   ;  (is (= :4
   ;         (:move (minimax
