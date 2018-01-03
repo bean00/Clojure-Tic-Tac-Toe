@@ -75,13 +75,20 @@
                      :player :O, :finished? false}
                     initial-data)))
         "it returns the move to eventually draw"))
-  (testing "when Player O can win now (3 moves left)"
-    (is (= :4
-           (:move (minimax
-                    {:board {:X #{:1 :9 :2}, :O #{:6 :3 :5}},
-                     :player :O, :finished? false}
-                    initial-data)))
-        "it returns the move to win")))
+  (testing "when the game is finished"
+    (is (= 5
+           (:total-moves (minimax
+                           {:board {:X #{:1 :2 :3}, :O #{:4 :5}},
+                            :player :O, :finished? true}
+                           initial-data)))
+        "it returns the total number of moves made")))
+  ;(testing "when Player O can win now (3 moves left)"
+  ;  (is (= :4
+  ;         (:move (minimax
+  ;                  {:board {:X #{:1 :9 :2}, :O #{:6 :3 :5}},
+  ;                   :player :O, :finished? false}
+  ;                  initial-data)))
+  ;      "it returns the move to win")))
 
 (deftest minimax-move-test
   (testing "when Player O can win now (2 moves left)"

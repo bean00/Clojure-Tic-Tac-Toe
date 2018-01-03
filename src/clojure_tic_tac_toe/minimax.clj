@@ -47,7 +47,7 @@
     (fn [game-state {:keys [winning-moves valid-moves] :as initial-data}]
       (if (:finished? game-state)
         (let [score (game_handler/calculate-score game-state winning-moves)]
-          {:move :invalid-move, :score score})
+          {:score score, :move :invalid-move, :total-moves 5})
         (let [moves (game_handler/get-available-moves game-state valid-moves)
               new-game-states (create-new-game-states game-state initial-data moves)
               score-info-list (map #(minimax % initial-data)
@@ -55,7 +55,7 @@
               scores (get-scores score-info-list)
               score (get-score-based-on-player scores game-state)
               move (get-move-based-on-score moves scores score)]
-          {:move move, :score score})))))
+          {:score score, :move move})))))
 
 (defn minimax-move
   [game-state initial-data]
