@@ -13,11 +13,27 @@
   {:valid-moves valid-moves
    :winning-moves winning-moves})
 
+(deftest get-maps-with-target-score-test
+  (testing "when 3 maps are passed in"
+    (is (= '({:score 1, :move :2, :total-moves 3}
+             {:score 1, :move :3, :total-moves 3})
+           (get-maps-with-target-score '({:score 1, :move :2, :total-moves 3}
+                                         {:score 1, :move :3, :total-moves 3}
+                                         {:score 2, :move :4, :total-moves 3})
+                                       1))
+        "it returns a list with the maps that have the target score")))
+
 (deftest get-optimal-move-test
   (testing "when the score info list only contains 1 map"
     (is (= :2
            (get-optimal-move '({:score 1, :move :2, :total-moves 3}) 1))
-        "it returns the only move")))
+        "it returns the only move"))
+  (testing "when the score info list contains 2 maps with different scores"
+    (is (= :4
+           (get-optimal-move '({:score 1, :move :3, :total-moves 3}
+                               {:score 2, :move :4, :total-moves 3})
+                               2))
+        "it returns the move corresponding to the target score")))
 
 (deftest minimax-test
   (testing "when Player X already won"

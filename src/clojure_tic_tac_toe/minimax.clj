@@ -42,9 +42,16 @@
          create-map-of-moves-and-scores)
    moves scores))
 
+
+(defn get-maps-with-target-score
+  [score-info-list score]
+  (filter #(= score (:score %)) score-info-list))
+
 (defn get-optimal-move
-  [score-info-list target-score]
-  (:move (first score-info-list)))
+  [score-info-list score]
+  (let [maps-with-target-score (get-maps-with-target-score score-info-list score)
+        move (:move (first maps-with-target-score))]
+    move))
 
 (def minimax
   (memoize
