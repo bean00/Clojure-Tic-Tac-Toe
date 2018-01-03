@@ -42,6 +42,10 @@
          create-map-of-moves-and-scores)
    moves scores))
 
+(defn get-optimal-move
+  [score-info-list target-score]
+  (:move (first score-info-list)))
+
 (def minimax
   (memoize
     (fn [game-state {:keys [winning-moves valid-moves] :as initial-data}]
@@ -55,6 +59,7 @@
                                    new-game-states)
               scores (get-scores score-info-list)
               score (get-score-based-on-player scores game-state)
+              ;move (get-optimal-move score-info-list score)
               move (get-move-based-on-score moves scores score)
               total-moves (game_handler/get-total-moves (first new-game-states))]
           {:score score, :move move, :total-moves total-moves})))))

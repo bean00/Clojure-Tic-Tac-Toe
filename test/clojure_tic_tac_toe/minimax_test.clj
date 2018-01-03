@@ -13,6 +13,12 @@
   {:valid-moves valid-moves
    :winning-moves winning-moves})
 
+(deftest get-optimal-move-test
+  (testing "when the score info list only contains 1 map"
+    (is (= :2
+           (get-optimal-move '({:score 1, :move :2, :total-moves 3}) 1))
+        "it returns the only move")))
+
 (deftest minimax-test
   (testing "when Player X already won"
     (let [score-info (minimax
