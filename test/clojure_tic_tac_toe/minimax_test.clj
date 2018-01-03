@@ -74,7 +74,14 @@
                     {:board {:X #{:1 :7}, :O #{:5}},
                      :player :O, :finished? false}
                     initial-data)))
-        "it returns the move to eventually draw")))
+        "it returns the move to eventually draw"))
+  (testing "when Player O can win now (3 moves left)"
+    (is (= :4
+           (:move (minimax-move-and-score
+                    {:board {:X #{:1 :9 :2}, :O #{:6 :3 :5}},
+                     :player :O, :finished? false}
+                    initial-data)))
+        "it returns the move to win")))
 
 (deftest minimax-move-test
   (testing "when Player O can win now (2 moves left)"

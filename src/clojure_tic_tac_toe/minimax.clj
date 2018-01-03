@@ -7,8 +7,8 @@
   (map #(game_handler/add-move game-state initial-data %) moves))
 
 (defn- get-scores
-  [scores-and-moves]
-  (map #(:score %) scores-and-moves))
+  [moves-and-scores]
+  (map #(:score %) moves-and-scores))
 
 
 (defn- max-or-min-based-on-player
