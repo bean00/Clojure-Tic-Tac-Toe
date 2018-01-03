@@ -14,3 +14,10 @@
   [board move player]
   (update board player conj move))
 
+(defn get-total-moves
+  [board]
+  (let [players-moves (vals board)
+        all-moves (apply set/union players-moves)
+        total-moves (count all-moves)]
+    total-moves))
+
