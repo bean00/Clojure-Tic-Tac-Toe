@@ -23,6 +23,16 @@
                                        1))
         "it returns a list with the maps that have the target score")))
 
+(deftest sort-maps-by-total-moves-test
+  (testing "when 3 maps are passed in"
+    (is (= '({:score 1, :move :2, :total-moves 3}
+             {:score 1, :move :3, :total-moves 4}
+             {:score 1, :move :4, :total-moves 5})
+           (sort-maps-by-total-moves '({:score 1, :move :2, :total-moves 3}
+                                       {:score 1, :move :4, :total-moves 5}
+                                       {:score 1, :move :3, :total-moves 4})))
+        "it sorts them by total moves")))
+
 (deftest get-optimal-move-test
   (testing "when the score info list only contains 1 map"
     (is (= :2

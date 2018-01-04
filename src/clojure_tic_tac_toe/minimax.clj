@@ -47,10 +47,15 @@
   [score-info-list score]
   (filter #(= score (:score %)) score-info-list))
 
+(defn sort-maps-by-total-moves
+  [maps]
+  (sort-by :total-moves (vec maps)))
+
 (defn get-optimal-move
   [score-info-list score]
   (let [maps-with-target-score (get-maps-with-target-score score-info-list score)
-        move (:move (first maps-with-target-score))]
+        sorted-maps (sort-maps-by-total-moves maps-with-target-score)
+        move (:move (first sorted-maps))]
     move))
 
 (def minimax
