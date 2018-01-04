@@ -13,6 +13,14 @@
   {:valid-moves valid-moves
    :winning-moves winning-moves})
 
+(deftest create-score-info-list-test
+  (testing "when the scores, moves, and total moves are passed in"
+    (is (= '({:score 1, :move :2, :total-moves 3}
+             {:score 1, :move :3, :total-moves 3}
+             {:score 2, :move :4, :total-moves 3})
+           (create-score-info-list '(1 1 2) '(:2 :3 :4) '(3 3 3)))
+        "it returns a list of maps")))
+
 (deftest get-maps-with-target-score-test
   (testing "when 3 maps are passed in"
     (is (= '({:score 1, :move :2, :total-moves 3}
@@ -112,14 +120,14 @@
                     {:board {:X #{:1 :7}, :O #{:5}},
                      :player :O, :finished? false}
                     initial-data)))
-        "it returns the move to eventually draw")))
-  ;(testing "when Player O can win now (3 moves left)"
-  ;  (is (= :4
-  ;         (:move (minimax
-  ;                  {:board {:X #{:1 :9 :2}, :O #{:6 :3 :5}},
-  ;                   :player :O, :finished? false}
-  ;                  initial-data)))
-  ;      "it returns the move to win")))
+        "it returns the move to eventually draw"))
+  (testing "when Player O can win now (3 moves left)"
+    (is (= :7
+           (:move (minimax
+                    {:board {:X #{:1 :9 :2}, :O #{:6 :3 :5}},
+                     :player :O, :finished? false}
+                    initial-data)))
+        "it returns the move to win")))
 
 (deftest minimax-move-test
   (testing "when Player O can win now (2 moves left)"
