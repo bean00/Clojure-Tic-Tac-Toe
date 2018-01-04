@@ -23,26 +23,6 @@
     (apply (max-or-min-based-on-player player) scores)))
 
 
-(defn- create-map-of-moves-and-scores
-  [moves scores]
-  (zipmap moves scores))
-
-(defn- get-pairs-with-target-score
-  [moves-and-scores target-score]
-  (filter #(-> % val (= target-score)) moves-and-scores))
-
-(defn- get-move-from-pairs
-  [pairs]
-  (first (first pairs)))
-
-(defn- get-move-based-on-score
-  [moves scores target-score]
-  ((comp get-move-from-pairs
-         #(get-pairs-with-target-score % target-score)
-         create-map-of-moves-and-scores)
-   moves scores))
-
-
 (defn create-score-info-list
   [scores moves total-moves]
   (map #(assoc {} :score %1 :move %2 :total-moves %3)
@@ -79,7 +59,6 @@
               score (get-score-based-on-player scores game-state)
               score-info-list (create-score-info-list scores moves totals)
               move (get-optimal-move score-info-list score)
-              ;move (get-move-based-on-score moves scores score)
               total-moves (first totals)] ; use total for selected move?
           {:score score, :move move, :total-moves total-moves})))))
 
