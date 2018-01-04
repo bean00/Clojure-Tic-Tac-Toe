@@ -36,11 +36,15 @@
   [maps]
   (sort-by :total-moves (vec maps)))
 
+(defn- extract-move-from-first-map
+  [sorted-maps]
+  (:move (first sorted-maps)))
+
 (defn get-optimal-move
   [score-info-list score]
   (let [maps-with-target-score (get-maps-with-target-score score-info-list score)
         sorted-maps (sort-maps-by-total-moves maps-with-target-score)
-        move (:move (first sorted-maps))] ; make a helper function for this
+        move (extract-move-from-first-map sorted-maps)]
     move))
 
 (def minimax
