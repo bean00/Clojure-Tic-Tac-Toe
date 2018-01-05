@@ -52,10 +52,14 @@
 (def minimax
   (memoize
     (fn [game-state {:keys [winning-moves valid-moves] :as initial-data}]
+      ; IF game is finished:
       (if (:finished? game-state)
+        ; return score-info without move (return-score-info-without-move)
         (let [score (game_handler/calculate-score game-state winning-moves)
               total-moves (game_handler/get-total-moves game-state)]
           {:score score, :move :invalid-move, :total-moves total-moves})
+      ; ELSE IF game is NOT finished:
+        ; return score-info with a move (return-score-info-with-move)
         (let [moves (game_handler/get-available-moves game-state valid-moves)
               new-game-states (create-new-game-states game-state initial-data moves)
               raw-score-info-list (map #(minimax % initial-data)
