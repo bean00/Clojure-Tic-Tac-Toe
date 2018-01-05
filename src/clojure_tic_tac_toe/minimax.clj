@@ -2,6 +2,8 @@
   (:require [clojure-tic-tac-toe.game_handler :as game_handler]
             [clojure-tic-tac-toe.win_checker :as win_checker]))
 
+(declare minimax)
+
 (defn- create-new-game-states
   [game-state initial-data moves]
   (map #(game_handler/add-move game-state initial-data %) moves))
@@ -51,30 +53,31 @@
 
 
 (defn- return-score-info-without-move
-  [game-state winning-moves]
+  [game-state {:keys [winning-moves]}]
   (let [score (game_handler/calculate-score game-state winning-moves)
         total-moves (game_handler/get-total-moves game-state)]
     {:score score, :move :invalid-move, :total-moves total-moves}))
 
+(defn- return-score-info-with-move
+  [game-state {:keys [valid-moves] :as initial-data}]
+  (let [moves (game_handler/get-available-moves game-state valid-moves)
+        new-game-states (create-new-game-states game-state initial-data moves)
+        raw-score-info-list (map #(minimax % initial-data)
+                                 new-game-states)
+        scores (get-scores raw-score-info-list)
+        totals (map #(:total-moves %) raw-score-info-list)
+        score (get-score-based-on-player scores game-state)
+        score-info-list (create-score-info-list scores moves totals)
+        move (get-optimal-move score-info-list score)
+        total-moves (first totals)]
+    {:score score, :move move, :total-moves total-moves}))
+
 (def minimax
   (memoize
-    (fn [game-state {:keys [winning-moves valid-moves] :as initial-data}]
-      ; IF game is finished:
+    (fn [game-state initial-data]
       (if (:finished? game-state)
-        (return-score-info-without-move game-state winning-moves)
-      ; ELSE IF game is NOT finished:
-        ; return score-info with a move (return-score-info-with-move)
-        (let [moves (game_handler/get-available-moves game-state valid-moves)
-              new-game-states (create-new-game-states game-state initial-data moves)
-              raw-score-info-list (map #(minimax % initial-data)
-                                       new-game-states)
-              scores (get-scores raw-score-info-list)
-              totals (map #(:total-moves %) raw-score-info-list)
-              score (get-score-based-on-player scores game-state)
-              score-info-list (create-score-info-list scores moves totals)
-              move (get-optimal-move score-info-list score)
-              total-moves (first totals)]
-          {:score score, :move move, :total-moves total-moves})))))
+        (return-score-info-without-move game-state initial-data)
+        (return-score-info-with-move game-state initial-data)))))
 
 (defn minimax-move
   [game-state initial-data]
