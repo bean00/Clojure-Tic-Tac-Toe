@@ -49,7 +49,7 @@
   [sorted-maps]
   (:move (first sorted-maps)))
 
-(defn get-optimal-move
+(defn- get-optimal-move
   [score-info-list score]
   (let [maps-with-target-score (get-maps-with-target-score score-info-list score)
         sorted-maps (sort-maps-by-total-moves maps-with-target-score)
