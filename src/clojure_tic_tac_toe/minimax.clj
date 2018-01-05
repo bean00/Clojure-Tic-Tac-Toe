@@ -63,16 +63,21 @@
         total-moves (game_handler/get-total-moves game-state)]
     {:score score, :move :invalid-move, :total-moves total-moves}))
 
+
+(defn- create-raw-score-info-list
+  [game-state initial-data moves]
+  (let [new-game-states (create-new-game-states game-state initial-data moves)
+        raw-score-info-list (map #(minimax % initial-data) new-game-states)]
+    raw-score-info-list))
+
 (defn- return-score-info-with-move
   [game-state {:keys [valid-moves] :as initial-data}]
   (let [moves (game_handler/get-available-moves game-state valid-moves)
-        new-game-states (create-new-game-states game-state initial-data moves)
-        raw-score-info-list (map #(minimax % initial-data)
-                                 new-game-states)
+        raw-score-info-list (create-raw-score-info-list game-state initial-data moves)
         scores (get-scores raw-score-info-list)
         totals (get-totals raw-score-info-list)
-        score (get-score-based-on-player scores game-state)
         score-info-list (create-score-info-list scores moves totals)
+        score (get-score-based-on-player scores game-state)
         move (get-optimal-move score-info-list score)
         total-moves (first totals)]
     {:score score, :move move, :total-moves total-moves}))
