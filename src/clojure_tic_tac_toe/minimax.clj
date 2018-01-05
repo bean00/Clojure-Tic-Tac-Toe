@@ -57,7 +57,7 @@
     move))
 
 
-(defn- return-score-info-without-move
+(defn- score-info-without-move
   [game-state {:keys [winning-moves]}]
   (let [score (game_handler/calculate-score game-state winning-moves)
         total-moves (game_handler/get-total-moves game-state)]
@@ -70,7 +70,7 @@
         raw-score-info-list (map #(minimax % initial-data) new-game-states)]
     raw-score-info-list))
 
-(defn- return-score-info-with-move
+(defn- score-info-with-move
   [game-state {:keys [valid-moves] :as initial-data}]
   (let [moves (game_handler/get-available-moves game-state valid-moves)
         raw-score-info-list (create-raw-score-info-list game-state initial-data moves)
@@ -86,8 +86,8 @@
   (memoize
     (fn [game-state initial-data]
       (if (:finished? game-state)
-        (return-score-info-without-move game-state initial-data)
-        (return-score-info-with-move game-state initial-data)))))
+        (score-info-without-move game-state initial-data)
+        (score-info-with-move game-state initial-data)))))
 
 (defn minimax-move
   [game-state initial-data]
