@@ -14,6 +14,11 @@
   (map #(:score %) score-info-list))
 
 
+(defn- get-totals
+  [score-info-list]
+  (map #(:total-moves %) score-info-list))
+
+
 (defn- max-or-min-based-on-player
   [player]
   (cond
@@ -65,7 +70,7 @@
         raw-score-info-list (map #(minimax % initial-data)
                                  new-game-states)
         scores (get-scores raw-score-info-list)
-        totals (map #(:total-moves %) raw-score-info-list)
+        totals (get-totals raw-score-info-list)
         score (get-score-based-on-player scores game-state)
         score-info-list (create-score-info-list scores moves totals)
         move (get-optimal-move score-info-list score)
