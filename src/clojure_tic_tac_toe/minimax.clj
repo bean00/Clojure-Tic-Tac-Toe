@@ -4,21 +4,19 @@
 
 (declare minimax)
 
+; ----- Beginning: functions for score-info-with-move -----
+; -- functions for create-raw-score-info-list --
 (defn- create-new-game-states
   [game-state initial-data moves]
   (map #(game_handler/add-move game-state initial-data %) moves))
 
+(defn- create-raw-score-info-list
+  [game-state initial-data moves]
+  (let [new-game-states (create-new-game-states game-state initial-data moves)
+        raw-score-info-list (map #(minimax % initial-data) new-game-states)]
+    raw-score-info-list))
 
-(defn- get-scores
-  [score-info-list]
-  (map #(:score %) score-info-list))
-
-
-(defn- get-totals
-  [score-info-list]
-  (map #(:total-moves %) score-info-list))
-
-
+; -- functions for get-score-based-on-player --
 (defn- max-or-min-based-on-player
   [player]
   (cond
@@ -30,13 +28,7 @@
   (let [player (:player game-state)]
     (apply (max-or-min-based-on-player player) scores)))
 
-
-(defn- create-score-info-list
-  [scores moves total-moves]
-  (map #(assoc {} :score %1 :move %2 :total-moves %3)
-       scores moves total-moves))
-
-
+; -- functions for get-optimal-move --
 (defn- get-maps-with-target-score
   [score-info-list score]
   (filter #(= score (:score %)) score-info-list))
@@ -56,19 +48,27 @@
         move (extract-move-from-first-map sorted-maps)]
     move))
 
+; -- other functions for score-info-with-move --
+(defn- get-scores
+  [score-info-list]
+  (map #(:score %) score-info-list))
 
+(defn- get-totals
+  [score-info-list]
+  (map #(:total-moves %) score-info-list))
+
+(defn- create-score-info-list
+  [scores moves total-moves]
+  (map #(assoc {} :score %1 :move %2 :total-moves %3)
+       scores moves total-moves))
+; ----- End: functions for score-info-with-move -----
+
+; ----- functions for minimax -----
 (defn- score-info-without-move
   [game-state {:keys [winning-moves]}]
   (let [score (game_handler/calculate-score game-state winning-moves)
         total-moves (game_handler/get-total-moves game-state)]
     {:score score, :move :invalid-move, :total-moves total-moves}))
-
-
-(defn- create-raw-score-info-list
-  [game-state initial-data moves]
-  (let [new-game-states (create-new-game-states game-state initial-data moves)
-        raw-score-info-list (map #(minimax % initial-data) new-game-states)]
-    raw-score-info-list))
 
 (defn- score-info-with-move
   [game-state {:keys [valid-moves] :as initial-data}]
@@ -89,6 +89,7 @@
         (score-info-without-move game-state initial-data)
         (score-info-with-move game-state initial-data)))))
 
+; ----- final minimax-move function -----
 (defn minimax-move
   [game-state initial-data]
   (:move (minimax game-state initial-data)))
