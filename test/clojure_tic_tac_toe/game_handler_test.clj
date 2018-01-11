@@ -58,6 +58,12 @@
            (token-at {:board {:X #{:2}, :O #{}}} :2 ))
         "it returns the token key for X")))
 
+(deftest get-total-moves-test
+  (testing "when 3 moves have been made"
+    (is (= 3
+           (get-total-moves {:board {:X #{:1 :2}, :O #{:3}}}))
+        "it returns 3")))
+
 (deftest get-available-moves-test
   (testing "when no move has been made"
     (is (= valid-moves-as-sorted-list
